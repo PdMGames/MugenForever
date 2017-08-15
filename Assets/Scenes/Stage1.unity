@@ -144,6 +144,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 399468001}
+  - component: {fileID: 399468002}
   - component: {fileID: 399468000}
   m_Layer: 0
   m_Name: Kfm
@@ -186,6 +187,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &399468002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 399467999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e48071788265b45babf41518140101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: mugen\chars\kfm\kfm.def
+  displayname: 
+  versiondate: 
+  mugenversion: 
+  author: 
+  paldefaults: 
+  localcoord: 
+  cmd: 
+  cns: 
+  st: []
+  ai: 
+  sprite: 
+  anim: 
+  sound: 
+  introstoryboard: 
+  endingstoryboard: 
+  x: 
+  y: 
+  z: 
+  a: 
+  b: 
+  c: 
+  pal: []
 --- !u!1 &648680398
 GameObject:
   m_ObjectHideFlags: 0

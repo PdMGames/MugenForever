@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BinaryReader.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
+    <Compile Include="Assets\Scripts\DefChar.cs" />
     <Compile Include="Assets\Scripts\SFF\Sff.cs" />
     <Compile Include="Assets\Scripts\SFF\SffSprite.cs" />
     <Compile Include="Assets\Scripts\SFF\SffV1.cs" />

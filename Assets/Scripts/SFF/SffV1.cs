@@ -53,19 +53,14 @@ namespace MugenForever.Sff
             offsetSubFile = ReadInt(fileStream, 4);
             sizeSubFileHeader = ReadInt(fileStream, 4);
             paletteType = ReadInt(fileStream, 1);
-            //paletteType = fileStream.ReadByte();
-            //ReadJump(fileStream, 1); //paletteType
             ReadJump(fileStream, 3); //blank space
             comments = ReadString(fileStream, 476); //comments
 
-            Debug.Log(fileStream.Position);
-
-            sprites = new Dictionary<int, Dictionary<int, SffSprite>>();
+            sprites = new List<SffSprite>();
+            spriteList = new Dictionary<int, Dictionary<int, SffSprite>>();
 
             for (int i = 0; i < totalImage; i++)
             {
-
-
                 /**
                     00-03 File offset where next subfile in the "linked list" is	[04]
                     located. Null if last subfile
@@ -85,8 +80,6 @@ namespace MugenForever.Sff
 
                 SffSprite spr = new SffSprite();
 
-                Debug.Log("LOOP START Posicao: " + fileStream.Position);
-
                 spr.nextFileOffset = ReadInt(fileStream, 4);
                 spr.subfileLength = ReadInt(fileStream, 4);
 
@@ -96,12 +89,15 @@ namespace MugenForever.Sff
                 spr.imageNumber = ReadInt(fileStream, 2);
                 spr.indexPreviousLinked = ReadInt(fileStream, 2);
 
-                if (spr.subfileLength == 0 && spr.indexPreviousLinked != 0 && sprites.ContainsKey(spr.groupNumber))
-                    spr.subfileLength = sprites[spr.groupNumber][spr.imageNumber].subfileLength;
+                if (spr.subfileLength == 0 && spr.indexPreviousLinked != 0 && spriteList.ContainsKey(spr.groupNumber))
+                {
+                    spr.subfileLength = spriteList[spr.groupNumber][spr.imageNumber].subfileLength;
+                }
 
                 spr.samePaleteOfPreviousImage = ReadBool(fileStream);
                 spr.comments = ReadString(fileStream, 13);
-                
+                spr.name = spr.groupNumber + "-" + spr.imageNumber + " " + spr.comments;
+
                 byte[] imageBytes = ReadBytes(fileStream, spr.subfileLength);
 
                 BinaryWriter w = new BinaryWriter(File.OpenWrite(String.Format("imagem.g-{0}.i-{1}.pcx", spr.groupNumber, spr.imageNumber)));
@@ -111,22 +107,19 @@ namespace MugenForever.Sff
                 w.Flush();
                 w.Close();
 
-                
-                if (sprites.ContainsKey(spr.groupNumber))
+                if (spriteList.ContainsKey(spr.groupNumber))
                 {
-                    Dictionary<int, SffSprite> dicSPR = sprites[spr.groupNumber];
+                    Dictionary<int, SffSprite> dicSPR = spriteList[spr.groupNumber];
                     dicSPR.Add(spr.imageNumber, spr);
                 }
                 else
                 {
+                    sprites.Add(spr);
                     Dictionary<int, SffSprite> dicSPR = new Dictionary<int, SffSprite>();
                     dicSPR.Add(spr.imageNumber, spr);
-                    sprites.Add(spr.groupNumber, dicSPR);
+                    spriteList.Add(spr.groupNumber, dicSPR);
                 }
-                
             }
-
-            Debug.Log(sprites[1][2].comments);
         }
     }
 }

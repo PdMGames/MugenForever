@@ -17,7 +17,8 @@ namespace MugenForever.Sff
         public int paletteType;
         public string comments;
 
-        public Dictionary<int, Dictionary<int, SffSprite>> sprites;
+        public List<SffSprite> sprites;
+        public Dictionary<int, Dictionary<int, SffSprite>> spriteList;
 
         public void Start()
         {

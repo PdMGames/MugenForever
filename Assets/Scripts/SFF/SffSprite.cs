@@ -24,6 +24,7 @@ This is the actual
     [System.Serializable]
     public class SffSprite
     {
+        public string name;
         public int nextFileOffset;
         public int subfileLength;
         public int axisX;

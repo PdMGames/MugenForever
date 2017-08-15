@@ -1,0 +1,20 @@
+| SND file structure
+|--------------------------------------------------*\
+Version 1.01
+HEADER
+------
+Bytes
+00-11 "ElecbyteSnd\0" signature	[12]
+12-15 4 verhi, 4 verlo	[04]
+16-19 Number of sounds	[04]
+20-23 File offset where first subfile is located.	[04]
+24-511 Blank; can be used for comments.	[488]
+SUBFILEHEADER
+-------
+Bytes
+00-03 File offset where next subfile in the linked list is	[04]
+located. Null if last subfile.
+04-07 Subfile length (not including header.)	[04]
+08-11 Group number	[04]
+12-15 Sample number	[04]
+08- Sound data (WAV)

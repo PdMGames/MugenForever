@@ -1,0 +1,26 @@
+| FNT file structure 
+|--------------------------------------------------*\
+/*
+Very simple file format, formed by concatenating a pcx file and a text
+file together and prepending a header.
+May be optimized for size by stripping the text file of comments before
+adding it to the .fnt file. Be sure text data comes last in the file.
+*/
+Version 1.0
+HEADER
+------
+Bytes
+00-11 "ElecbyteFnt\0" signature 
+[12]
+12-15 2 verhi, 2 verlo 
+[04]
+16-20 File offset where PCX data is located. 
+[04]
+20-23 Length of PCX data in bytes. 
+[04]
+24-27 File offset where TEXT data is located. 
+[04]
+28-31 Length of TEXT data in bytes. 
+[04]
+32-63 Blank; can be used for comments. 
+[40]

@@ -60,7 +60,7 @@ namespace MugenForever.Sff
      ***/
     public class SffV2 : Sff
     {
-        public override void readFromFile(string pathFile)
+        public override void ReadFromFile(string pathFile)
         {
             FileStream fileStream = new FileStream(pathFile, FileMode.Open, FileAccess.Read);
 

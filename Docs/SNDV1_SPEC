@@ -18,3 +18,6 @@ located. Null if last subfile.
 08-11 Group number	[04]
 12-15 Sample number	[04]
 08- Sound data (WAV)
+
+http://answers.unity3d.com/questions/737002/wav-byte-to-audioclip.html
+https://github.com/deadlyfingers/UnityWav

@@ -5,9 +5,8 @@ using UnityEditor;
 
 namespace MugenForever
 {
-    public class DefChar : MonoBehaviour
+    public class DefChar : MugenForever.Reader.Text
     {
-        public string fileName;
         public string displayname;
         public string versiondate;
         public string mugenversion;
@@ -39,28 +38,27 @@ namespace MugenForever
         [Header("Pals")]
         public List<string> pal;
 
-        
-
         void Start()
         {
             if ( !string.IsNullOrEmpty(fileName))
             {
-                LoadFromFile(fileName);
+                ReadFromFile(fileName);
             }
         }
 
         [ContextMenu("Load From File")]
         public void LoadInEditor()
         {
-            string file = EditorUtility.OpenFilePanel("Select Mugen Def File", "", "def");
+            string file = EditorUtility.OpenFilePanel("Select Mugen DEF Char File", "", "def");
 
             if (file.Length != 0)
             {
-                LoadFromFile(file);
+                ReadFromFile(file);
+                fileName = file;
             }
         }
-        
-        public void LoadFromFile(string file)
+
+        public override void ReadFromFile(string file)
         {
             string text = System.IO.File.ReadAllText(file);
             pal.Clear();
@@ -102,25 +100,6 @@ namespace MugenForever
                     }
                 }
             }
-        }
-
-        protected string ParseValue(string value)
-        {
-            value.Trim();
-
-            //remove comments
-            if (value.Contains(";"))
-            {
-                
-                List<string> parts = new List<string>();
-                parts.AddRange(value.Split(";"[0]));
-
-                value = parts[0].Trim();
-            }
-
-            value = value.Replace("\"", "");
-
-            return value.Trim();
         }
 
         protected void SetVariable(string variable, string value)

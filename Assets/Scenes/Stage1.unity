@@ -144,10 +144,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 399468001}
+  - component: {fileID: 399468004}
   - component: {fileID: 399468002}
   - component: {fileID: 399468000}
+  - component: {fileID: 399468003}
   m_Layer: 0
-  m_Name: Kfm
+  m_Name: Kung Fu Man
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -193,34 +195,208 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 399467999}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92e48071788265b45babf41518140101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: mugen\chars\kfm\kfm.def
-  displayname: 
-  versiondate: 
-  mugenversion: 
-  author: 
-  paldefaults: 
-  localcoord: 
-  cmd: 
-  cns: 
-  st: []
-  ai: 
-  sprite: 
-  anim: 
-  sound: 
-  introstoryboard: 
-  endingstoryboard: 
-  x: 
-  y: 
-  z: 
-  a: 
-  b: 
-  c: 
+  fileName: E:/Projetos/MugenForever/mugen/chars/kfm/kfm.def
+  displayname: Kung Fu Man
+  versiondate: 09,30,2009
+  mugenversion: 1.0
+  author: Elecbyte
+  paldefaults: 1,2,3,4
+  localcoord: 320,240
+  cmd: kfm.cmd
+  cns: kfm.cns
+  st:
+  - kfm.cns
+  - common1.cns
+  ai: kfm.ai
+  sprite: kfm.sff
+  anim: kfm.air
+  sound: kfm.snd
+  introstoryboard: intro.def
+  endingstoryboard: ending.def
+  x: 1
+  y: 2
+  z: 3
+  a: 4
+  b: 5
+  c: 6
   pal: []
+--- !u!114 &399468003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 399467999}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf52f72a2dae354f83bd67accef505f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: mugen\chars\kfm\kfm.snd
+  signature: ElecbyteSnd
+  version: 0.0.0.4
+  totalSound: 12
+  offsetSubFile: 512
+  comments: 
+  sounds:
+  - name: 0-0
+    nextFileOffset: 1570
+    subfileLength: 1042
+    groupNumber: 0
+    sampleNumber: 0
+    clip: {fileID: 959392784}
+  - name: 1-1
+    nextFileOffset: 21070
+    subfileLength: 2777
+    groupNumber: 1
+    sampleNumber: 1
+    clip: {fileID: 687274776}
+  - name: 5-0
+    nextFileOffset: 30093
+    subfileLength: 9007
+    groupNumber: 5
+    sampleNumber: 0
+    clip: {fileID: 424355845}
+  - name: 6-0
+    nextFileOffset: 32396
+    subfileLength: 2287
+    groupNumber: 6
+    sampleNumber: 0
+    clip: {fileID: 1975704048}
+  - name: 11-0
+    nextFileOffset: 66152
+    subfileLength: 33740
+    groupNumber: 11
+    sampleNumber: 0
+    clip: {fileID: 1377335820}
+  - name: 40-0
+    nextFileOffset: 66833
+    subfileLength: 665
+    groupNumber: 40
+    sampleNumber: 0
+    clip: {fileID: 1232018536}
+  - name: 100-0
+    nextFileOffset: 71962
+    subfileLength: 5113
+    groupNumber: 100
+    sampleNumber: 0
+    clip: {fileID: 1911796423}
+  - name: 800-0
+    nextFileOffset: 76631
+    subfileLength: 4653
+    groupNumber: 800
+    sampleNumber: 0
+    clip: {fileID: 1931123963}
+--- !u!82 &399468004
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 399467999}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!83 &424355845
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 5-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 22050
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &648680398
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +428,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!83 &687274776
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 1-1
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 11025
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &758328933
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,6 +641,32 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!83 &959392784
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 0-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 8000
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1124108974
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +736,32 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!83 &1232018536
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 40-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 11025
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1263490872
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,6 +792,32 @@ Transform:
   m_Father: {fileID: 648680399}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!83 &1377335820
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 11-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 11025
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1491061103
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,3 +916,136 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!83 &1911796423
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 100-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 22050
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
+--- !u!83 &1931123963
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 800-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 11025
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
+--- !u!83 &1975704048
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 6-0
+  m_LoadType: 0
+  m_Channels: 1
+  m_Frequency: 11025
+  m_BitsPerSample: 32
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
+--- !u!1 &2051320782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2051320784}
+  - component: {fileID: 2051320783}
+  m_Layer: 0
+  m_Name: pcxtest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2051320783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2051320782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e397b2b2cd880b4b8548725b0269407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: mugen\example.pcx
+  manufacturer: 0
+  version: 0
+  encoding: 0
+  bitsPerPixel: 0
+  window: 0
+  hDpi: 0
+  vDpi: 0
+  colorMap: 
+  reseverd: 0
+  bytesPerLine: 0
+  paletteInfo: 0
+  hScreenSize: 0
+  vScreenSize: 0
+  filler: 0
+--- !u!4 &2051320784
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2051320782}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

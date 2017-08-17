@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEditor;
 
 namespace MugenForever.Sff
 {
-    public class Sff : BinaryReader
+    public class Sff : MugenForever.Reader.Binary
     {
-        public string fileName = "";
         public string signature;
         public string version;
         public int totalGroups;
@@ -24,11 +24,11 @@ namespace MugenForever.Sff
         {
             if ( !string.IsNullOrEmpty(fileName))
             {
-                readFromFile(fileName);
+                ReadFromFile(fileName);
             }
         }
 
-        public virtual void readFromFile(string pathFile)
+        public override void ReadFromFile(string pathFile)
         {
             //read the file from disk
             FileStream fsSource = new FileStream(pathFile, FileMode.Open, FileAccess.Read);

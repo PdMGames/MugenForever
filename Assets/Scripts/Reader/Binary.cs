@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace MugenForever.Sff
-{
-    public class BinaryReader : MonoBehaviour
+namespace MugenForever.Reader
+{ 
+    public class Binary : Reader
     {
         protected void ReadJump(FileStream fileSream, int size)
         {
@@ -16,7 +16,9 @@ namespace MugenForever.Sff
         protected int ReadInt(FileStream fileSream, int size)
         {
             if (size == 1)
+            {
                 return fileSream.ReadByte();
+            }
 
             byte[] myVar = new byte[size];
             fileSream.Read(myVar, 0, size);

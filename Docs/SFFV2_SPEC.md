@@ -1,50 +1,200 @@
-== Introduction==
+## Introduction ##
+
 This document is a specification for the SFF 2.0 format, also known as SFFv2.
+
 SFFv2 file format is designed for fast loading, fast decompression and low runtime memory consumption.
 In 2.00, only 5 and 8-bit paletted sprites are supported.
 SFFv2 is an open file format. Elecbyte grants permission to implement the spec freely in any application.
 
-'''Terminology'''
+### Terminology
 
-ldata
- literal data.  Must be loaded verbatim.  In M.U.G.E.N, sprite data in the
- ldata block is loaded verbatim into memory, and decompressed as necessary on-the-fly.
+**ldata**
 
-tdata
- translate data.  Must be translated (e.g. decompressed) during
- load.
+	literal data.  Must be loaded verbatim.  In M.U.G.E.N, sprite data in the
+	ldata block is loaded verbatim into memory, and decompressed as necessary on-the-fly.
 
-==SFF 2.00==
-'''SFF header 2.00'''
+**tdata**
+	
+	translate data.  Must be translated (e.g. decompressed) during load.
+
+## SFF 2.00 ##
+
+### SFF header 2.00
 
 All values are little-endian.
 
-512 bytes
-dec  hex  size   meaning
- 0    0    12   "ElecbyteSpr\0" signature
- 12    C     1   verlo3; 0
- 13    D     1   verlo2; 0
- 14    E     1   verlo1; 0
- 15    F     1   verhi; 2
- 16   10     4   reserved; 0
- 20   14     4   reserved; 0
- 24   18     1   compatverlo3; 0
- 25   19     1   compatverlo1; 0
- 26   1A     1   compatverlo2; 0
- 27   1B     1   compatverhi; 2
- 28   1C     4   reserved; 0
- 32   20     4   reserved; 0
- 36   24     4   offset where first sprite node header data is located
- 40   28     4   Total number of sprites
- 44   2C     4   offset where first palette node header data is located
- 48   30     4   Total number of palettes
- 52   34     4   ldata offset
- 56   38     4   ldata length
- 60   3C     4   tdata offset
- 64   40     4   tdata length
- 68   44     4   reserved; 0
- 72   48     4   reserved; 0
- 76   4C   436   unused
+<table>
+	<thead>
+		<tr>
+			<th colspan="5">512 bytes</th>
+		</tr>
+		<tr>
+			<th>dec</th>
+			<th>hex</th>
+			<th>size</th>
+			<th>value</th>
+			<th>desc</th>
+		</tr>	
+	</thead>
+	<tbody>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>12</td>
+			<td>ElecbyteSpr\0</td>
+			<td>signature</td>
+		</tr>
+		<tr>
+			<td>12</td>
+			<td>C</td>
+			<td>1</td>
+			<td>0</td>
+			<td>verlo3</td>
+		</tr>
+		<tr>
+			<td>13</td>
+			<td>D</td>
+			<td>1</td>
+			<td>0</td>
+			<td>verlo2</td>
+		</tr>
+		<tr>
+			<td>14</td>
+			<td>E</td>
+			<td>1</td>
+			<td>0</td>
+			<td>verlo1</td>
+		</tr>
+		<tr>
+			<td>15</td>
+			<td>F</td>
+			<td>1</td>
+			<td>2</td>
+			<td>verhi</td>
+		</tr>
+		<tr>
+			<td>16</td>
+			<td>10</td>
+			<td>4</td>
+			<td>0</td>
+			<td>reserved</td>
+		</tr>
+		<tr>
+			<td>20</td>
+			<td>14</td>
+			<td>4</td>
+			<td>0</td>
+			<td>reserved</td>
+		</tr>
+		<tr>
+			<td>24</td>
+			<td>18</td>
+			<td>1</td>
+			<td>0</td>
+			<td>compatverlo3</td>
+		</tr>
+		<tr>
+			<td>25</td>
+			<td>19</td>
+			<td>1</td>
+			<td>0</td>
+			<td>compatverlo1</td>
+		</tr>
+		<tr>
+			<td>26</td>
+			<td>1A</td>
+			<td>1</td>
+			<td>0</td>
+			<td>compatverlo2</td>
+		</tr>
+		<tr>
+			<td>27</td>
+			<td>1B</td>
+			<td>1</td>
+			<td>2</td>
+			<td>compatverhi</td>
+		</tr>
+		<tr>
+			<td>28</td>
+			<td>1C</td>
+			<td>1</td>
+			<td>0</td>
+			<td>reserved</td>
+		</tr>
+		<tr>
+			<td>36</td>
+			<td>24</td>
+			<td>4</td>
+			<td>int</td>
+			<td>offset where first sprite node header data is located</td>
+		</tr>
+		<tr>
+			<td>40</td>
+			<td>28</td>
+			<td>4</td>
+			<td>int</td>
+			<td>Total number of sprites</td>
+		</tr>
+		<tr>
+			<td>44</td>
+			<td>2C</td>
+			<td>4</td>
+			<td>int</td>
+			<td>offset where first palette node header data is located</td>
+		</tr>
+		<tr>
+			<td>48</td>
+			<td>30</td>
+			<td>4</td>
+			<td>int</td>
+			<td>Total number of palettes</td>
+		</tr>
+		<tr>
+			<td>52</td>
+			<td>34</td>
+			<td>4</td>
+			<td>int</td>
+			<td>ldata offset</td>
+		</tr>
+		<tr>
+			<td>56</td>
+			<td>38</td>
+			<td>4</td>
+			<td>int</td>
+			<td>ldata length</td>
+		</tr>
+		<tr>
+			<td>60</td>
+			<td>3C</td>
+			<td>4</td>
+			<td>int</td>
+			<td>tdata offset</td>
+		</tr>
+		<tr>
+			<td>64</td>
+			<td>40</td>
+			<td>4</td>
+			<td>0</td>
+			<td>reserved</td>
+		</tr>
+		<tr>
+			<td>68</td>
+			<td>44</td>
+			<td>4</td>
+			<td>0</td>
+			<td>reserved</td>
+		</tr>
+		<tr>
+			<td>76</td>
+			<td>4C</td>
+			<td>436</td>
+			<td>string</td>
+			<td>unused; or comments</td>
+		</tr>
+	</tbody>
+</table>
+
+
 
 compatver
  Minimum version of loader needed to read this SFF: 2.00

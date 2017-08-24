@@ -166,9 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e31ef8cd506ef47b5dd2864ceca43c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: mugen\chars\kfm\intro.sff
+  fileName: mugen_2010\chars\kfm\kfm.sff
   signature: 
   version: 
+  compatVerLoad: 
   totalGroups: 0
   totalImage: 0
   offsetSubFile: 0
@@ -200,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92e48071788265b45babf41518140101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: E:/Projetos/MugenForever/mugen/chars/kfm/kfm.def
+  fileName: mugen\chars\kfm\kfm.def
   displayname: Kung Fu Man
   versiondate: 09,30,2009
   mugenversion: 1.0
@@ -236,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf52f72a2dae354f83bd67accef505f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: mugen\chars\kfm\kfm.snd
+  fileName: mugen_2010\chars\kfm\kfm.snd
   signature: ElecbyteSnd
   version: 0.0.0.4
   totalSound: 12
@@ -297,7 +298,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 399467999}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -641,6 +642,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
 --- !u!83 &959392784
 AudioClip:
   m_ObjectHideFlags: 0
@@ -736,6 +738,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
 --- !u!83 &1232018536
 AudioClip:
   m_ObjectHideFlags: 0
@@ -916,6 +919,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
 --- !u!83 &1911796423
 AudioClip:
   m_ObjectHideFlags: 0
@@ -1027,10 +1031,11 @@ MonoBehaviour:
   encoding: 0
   bitsPerPixel: 0
   window: 0
-  hDpi: 0
-  vDpi: 0
+  horizontalDpi: 0
+  verticalDpi: 0
   colorMap: 
-  reseverd: 0
+  reserved: 0
+  nPlanes: 0
   bytesPerLine: 0
   paletteInfo: 0
   hScreenSize: 0

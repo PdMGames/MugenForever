@@ -68,17 +68,29 @@ namespace MugenForever.Sff
             fileStream.Seek(0, SeekOrigin.Begin);
 
             signature = ReadString(fileStream, 12);
-            version = String.Format("{3}.{2}.{1}.{0}", fileStream.ReadByte(), fileStream.ReadByte(), fileStream.ReadByte(), fileStream.ReadByte());
+            version = String.Format("{3}.{2}.{1}.{0}", ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1));
 
-            /*byte[] totalGroup = new byte[4];
-            fileSream.Read(totalGroup, 0, 4);
-            sffInfo.totalGroup = BitConverter.ToInt32(totalGroup, 0);
-            System.Console.WriteLine(sffInfo.totalGroup);*/
+            // Pula 
+            ReadJump(fileStream, 8);
+
+            //  totalGroups = ReadInt(fileStream, 4);
+            compatVerLoad = String.Format("{3}.{2}.{1}.{0}", ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1));
             
+            // Pula 
+            ReadJump(fileStream, 8);
+
+            offsetSubFile = ReadInt(fileStream, 4);
+            totalImage = ReadInt(fileStream, 4);
+            
+            /*sizeSubFileHeader = ReadInt(fileStream, 4);
+            paletteType = ReadInt(fileStream, 1);
+            ReadJump(fileStream, 3); //blank space
+            comments = ReadString(fileStream, 476); //comments
+
             // Movendo ponteiro
             fileStream.Seek(36, SeekOrigin.Begin);
             totalImage = ReadInt(fileStream, 4);
-            offsetSubFile = ReadInt(fileStream, 4); ;
+            offsetSubFile = ReadInt(fileStream, 4); ;*/
         }
     }
 }

@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace MugenForever.Reader
-{ 
-    public class Binary : Reader
+namespace MugenForever.Sff
+{
+    public class BinaryReader : MonoBehaviour
     {
         protected void ReadJump(FileStream fileSream, int size)
         {
-            fileSream.Seek(size, SeekOrigin.Current);
+            byte[] myVar = new byte[size];
+            fileSream.Read(myVar, 0, size);
         }
 
         protected int ReadInt(FileStream fileSream, int size)
         {
             if (size == 1)
-            {
                 return fileSream.ReadByte();
-            }
 
             byte[] myVar = new byte[size];
             fileSream.Read(myVar, 0, size);

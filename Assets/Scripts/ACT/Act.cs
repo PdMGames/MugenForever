@@ -4,9 +4,9 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 
-namespace MugenForever.Sff
+namespace MugenForever.Act
 {
-    public class Sff : MugenForever.Reader.Binary
+    public class Act : MugenForever.Reader.Binary
     {
         public string signature;
         public string version;

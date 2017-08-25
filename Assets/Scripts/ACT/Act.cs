@@ -8,18 +8,8 @@ namespace MugenForever.Act
 {
     public class Act : MugenForever.Reader.Binary
     {
-        public string signature;
-        public string version;
-        public string compatVerLoad;
-        public int totalGroups;
-        public int totalImage;
-        public int offsetSubFile;
-        public int sizeSubFileHeader;
-        public int paletteType;
-        public string comments;
-
-        public List<SffSprite> sprites;
-        public Dictionary<int, Dictionary<int, SffSprite>> spriteList;
+        public List<RGBA> rbgs = new List<RGBA>();
+        public Dictionary<long, RGBA> rgbList = new Dictionary<long, RGBA>();
 
         public void Start()
         {
@@ -34,29 +24,33 @@ namespace MugenForever.Act
             //read the file from disk
             FileStream fsSource = new FileStream(pathFile, FileMode.Open, FileAccess.Read);
 
-            // get the sff version
-            byte[] version = new byte[16];
-            fsSource.Read(version, 0, 16);
-
-            string verlo3 = version[15].ToString();
-
-            if ( verlo3 == "2")
-            {
-                SffV2 sff = gameObject.AddComponent<SffV2>();
-                sff.fileName = pathFile;
-            }
-            else if (verlo3 == "1")
-            {
-                SffV1 sff = gameObject.AddComponent<SffV1>();
-                sff.fileName = pathFile;
-            }
-            else
-            {
-                throw new UnityException("Sff version " + verlo3 + " not supported!");
+            for (long i=fsSource.Length, index=0;i>0; i-=3, index++) {
+                RGBA rgb = new RGBA(ReadInt(fsSource, 1), ReadInt(fsSource, 1), ReadInt(fsSource, 1), 255);
+                rbgs.Add(rgb);
+                rgbList.Add(index, rgb);
             }
 
-            //remove this component
-            Destroy(this);
+            fsSource.Close();
+        }
+    }
+
+    [System.Serializable]
+    public class RGBA
+    {
+        public int red;
+        public int green;
+        public int blue;
+        public Color32 color = new Color32(255,0,0,255);
+
+        public RGBA(int red, int green, int blue, int alpha)
+        {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+
+            color.r = BitConverter.GetBytes(this.red)[0];
+            color.g = BitConverter.GetBytes(this.green)[0];
+            color.b = BitConverter.GetBytes(this.blue)[0];
         }
     }
 }

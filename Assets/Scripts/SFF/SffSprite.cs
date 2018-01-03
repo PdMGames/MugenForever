@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MugenForever.Sff
 {
@@ -24,16 +21,117 @@ This is the actual
     [System.Serializable]
     public class SffSprite
     {
+        /// <summary>
+        /// Name of Sprite
+        /// </summary>
         public string name;
+
+        /// <summary>
+        /// Index position
+        /// </summary>
+        public long index;
+
+        /// <summary>
+        /// Next image offset
+        /// </summary>
         public int nextFileOffset;
+
+        /// <summary>
+        /// size of image: 0 is linked
+        /// </summary>
         public int subfileLength;
+
+        /// <summary>
+        /// Position X
+        /// </summary>
         public int axisX;
+
+        /// <summary>
+        /// Position Y
+        /// </summary>
         public int axisY;
+
+        /// <summary>
+        /// Number of group
+        /// </summary>
         public int groupNumber;
+
+        /// <summary>
+        /// Number of image
+        /// </summary>
         public int imageNumber;
+
+        /// <summary>
+        /// Position of image linked sprite only
+        /// </summary>
         public int indexPreviousLinked;
-        public bool samePaleteOfPreviousImage;
+
+        /// <summary>
+        /// Same palette of image previous
+        /// </summary>
+        public bool samePaletteOfPreviousImage;
+
+        /// <summary>
+        /// Comments
+        /// </summary>
         public string comments;
+        
+        /// <summary>
+        /// Image raw
+        /// </summary>
+        public Texture2D image;
+
+        /// <summary>
+        /// Sprite source
+        /// </summary>
         public Sprite sprite;
+
+        public Pcx pcx = new Pcx();
+
+        // version sffv2 <<
+
+        /// <summary>
+        /// Width of image
+        /// </summary>
+        public int width;
+
+        /// <summary>
+        /// Height of image
+        /// </summary>
+        public int height;
+
+        /// <summary>
+        /// ????
+        /// </summary>
+        public int coldepth;
+
+        /// <summary>
+        /// Format
+        /// 0 raw
+        /// 1 invalid (no use)
+        /// 2 RLE8
+        /// 3 RLE5
+        /// 4 LZ5
+        /// </summary>
+        public int fmt;
+
+        /// <summary>
+        ///  offset ldata or tdata
+        /// </summary>
+        public int offsetData;
+
+        /// <summary>
+        /// Index of palette
+        /// </summary>
+        public int paletteIndex;
+
+        /// <summary>
+        /// 0    unset: literal (use ldata); set: translate (use tdata; decompress on load)
+        /// 1-15 unused
+        /// </summary>
+        public int flag;
+
+        // >> version sffv2
+
     }
 }

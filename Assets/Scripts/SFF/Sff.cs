@@ -8,22 +8,73 @@ namespace MugenForever.Sff
 {
     public class Sff : MugenForever.Reader.Binary
     {
-        public string signature;
-        public string version;
-        public string compatVerLoad;
-        public int totalGroups;
-        public int totalImage;
-        public int offsetSubFile;
-        public int sizeSubFileHeader;
-        public int paletteType;
-        public string comments;
-
+        /// <summary>
+        /// Sprites
+        /// </summary>
         public List<SffSprite> sprites;
         public Dictionary<int, Dictionary<int, SffSprite>> spriteList;
 
+        /// <summary>
+        /// Signature of creator
+        /// </summary>
+        public string signature;
+
+        /// <summary>
+        /// Version of SFF
+        /// </summary>
+        public string version;
+
+        /// <summary>
+        /// Version min for load this SFF
+        /// </summary>
+        public string compatVerLoad;
+
+        /// <summary>
+        /// Total of groups
+        /// </summary>
+        public int totalGroups;
+
+        /// <summary>
+        /// Total images
+        /// </summary>
+        public int totalImage;
+
+        /// <summary>
+        /// Offset subfile
+        /// </summary>
+        public int offsetSubFile;
+
+        /// <summary>
+        /// size of first subfile 
+        /// </summary>
+        public int sizeSubFileHeader;
+        public int paletteType;       
+        public string comments;
+
+        // version SFFV2 <<
+        // [L]iteral data
+        public int offsetLData;
+        public int sizeLData;
+        
+        // [T]ranslate data
+        public int offsetTData;
+        public int sizeTData;
+
+        public int totalPalette;
+        public int offsetPaletteFile;
+        // >> version SFFV2
+
+        
+
+        /// <summary>
+        /// Palettes
+        /// </summary>
+        public List<Palette.Act> palletes;
+        public Dictionary<int, Dictionary<int, Palette.Act>> palletList;
+
         public void Start()
         {
-            if ( !string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
                 ReadFromFile(fileName);
             }
@@ -40,7 +91,7 @@ namespace MugenForever.Sff
 
             string verlo3 = version[15].ToString();
 
-            if ( verlo3 == "2")
+            if (verlo3 == "2")
             {
                 SffV2 sff = gameObject.AddComponent<SffV2>();
                 sff.fileName = pathFile;

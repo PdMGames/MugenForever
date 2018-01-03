@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -60,6 +61,10 @@ namespace MugenForever.Sff
      ***/
     public class SffV2 : Sff
     {
+        public byte[] pcx;
+        public byte[] png;
+        public Texture2D texture;
+
         public override void ReadFromFile(string pathFile)
         {
             FileStream fileStream = new FileStream(pathFile, FileMode.Open, FileAccess.Read);
@@ -76,21 +81,109 @@ namespace MugenForever.Sff
             //  totalGroups = ReadInt(fileStream, 4);
             compatVerLoad = String.Format("{3}.{2}.{1}.{0}", ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1));
             
-            // Pula 
+            // Jump reserved bytes
             ReadJump(fileStream, 8);
 
             offsetSubFile = ReadInt(fileStream, 4);
             totalImage = ReadInt(fileStream, 4);
-            
-            /*sizeSubFileHeader = ReadInt(fileStream, 4);
-            paletteType = ReadInt(fileStream, 1);
-            ReadJump(fileStream, 3); //blank space
-            comments = ReadString(fileStream, 476); //comments
 
-            // Movendo ponteiro
-            fileStream.Seek(36, SeekOrigin.Begin);
-            totalImage = ReadInt(fileStream, 4);
-            offsetSubFile = ReadInt(fileStream, 4); ;*/
+            offsetPaletteFile = ReadInt(fileStream, 4);
+            totalPalette = ReadInt(fileStream, 4);
+
+            offsetLData = ReadInt(fileStream, 4);
+            sizeLData = ReadInt(fileStream, 4);
+
+            offsetTData = ReadInt(fileStream, 4);
+            sizeTData = ReadInt(fileStream, 4);
+
+            // Jump reserved bytes
+            ReadJump(fileStream, 8);
+
+            comments = ReadString(fileStream, 436);
+
+            fileStream.Seek(offsetSubFile, SeekOrigin.Begin);
+
+            sprites = new List<SffSprite>();
+            spriteList = new Dictionary<int, Dictionary<int, SffSprite>>();
+
+            for (int i = 0; i < 1; i++)
+            {
+                SffSprite spr = new SffSprite();
+
+                //spr.nextFileOffset = ReadInt(fileStream, 4);
+                //spr.subfileLength = ReadInt(fileStream, 4);
+                spr.groupNumber = ReadInt(fileStream, 2);
+                spr.imageNumber = ReadInt(fileStream, 2);
+
+                spr.width = ReadInt(fileStream, 2);
+                spr.height = ReadInt(fileStream, 2);
+
+                spr.axisX = ReadInt(fileStream, 2);
+                spr.axisY = ReadInt(fileStream, 2);                
+                
+                spr.indexPreviousLinked = ReadInt(fileStream, 2);
+                spr.index = i + 1;
+
+                spr.fmt = ReadInt(fileStream, 1);
+                
+                CompressorType compressorType = CompressorType.RAW;
+                if (Enum.IsDefined(typeof(CompressorType), spr.fmt))
+                    compressorType = (CompressorType)Enum.ToObject(typeof(CompressorType), spr.fmt);
+
+                Compressor compressor = CompressorFactory.getCompressor(compressorType);
+
+                spr.coldepth = ReadInt(fileStream, 1);
+
+                spr.offsetData = ReadInt(fileStream, 4);
+
+                spr.subfileLength = ReadInt(fileStream, 4);
+
+                if (spr.subfileLength == 0 && spr.indexPreviousLinked != 0 && sprites.Exists(sff => sff.index == spr.indexPreviousLinked))
+                {
+                    spr.subfileLength = sprites[spr.indexPreviousLinked].subfileLength;
+                    spr.pcx = sprites[spr.indexPreviousLinked].pcx;                    
+                }
+                else
+                {
+                    // mover para a possição
+                    fileStream.Seek(spr.offsetData, SeekOrigin.Begin);
+                    byte[] imageBytes = ReadBytes(fileStream, spr.subfileLength);
+
+                    if (compressor != null)
+                        imageBytes = compressor.descompress(imageBytes);
+
+                    spr.pcx.load(new MemoryStream(imageBytes));
+                    spr.image = spr.pcx.image;
+                }
+
+                spr.image = spr.pcx.image;
+
+                spr.paletteIndex = ReadInt(fileStream, 2);
+                spr.flag = ReadInt(fileStream, 2);
+
+                // mover para a possição
+                //fileStream.Seek(spr.offsetData + spr.subfileLength, SeekOrigin.Begin);
+
+                spr.name = spr.groupNumber + "-" + spr.imageNumber + " " + spr.comments;
+
+                spr.sprite = new Sprite();
+
+                //create dictionary for group
+                if (spriteList.ContainsKey(spr.groupNumber))
+                {
+                    Dictionary<int, SffSprite> dicSPR = spriteList[spr.groupNumber];
+                    sprites.Add(spr);
+                    dicSPR.Add(spr.imageNumber, spr);
+                }
+                else
+                {
+                    sprites.Add(spr);
+                    Dictionary<int, SffSprite> dicSpr = new Dictionary<int, SffSprite>();
+                    dicSpr.Add(spr.imageNumber, spr);
+                    spriteList.Add(spr.groupNumber, dicSpr);
+                }
+
+            }
         }
     }
 }

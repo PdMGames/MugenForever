@@ -7,12 +7,12 @@ namespace MugenForever.Reader
 { 
     public class Binary : Reader
     {
-        protected void ReadJump(FileStream fileSream, int size)
+        protected void ReadJump(Stream fileSream, int size)
         {
             fileSream.Seek(size, SeekOrigin.Current);
         }
 
-        protected int ReadInt(FileStream fileSream, int size)
+        protected int ReadInt(Stream fileSream, int size)
         {
             if (size == 1)
             {
@@ -33,19 +33,19 @@ namespace MugenForever.Reader
             }
         }
 
-        protected bool ReadBool(FileStream fileSream)
+        protected bool ReadBool(Stream fileSream)
         {
             return fileSream.ReadByte() == 1 ? true : false;
         }
 
-        protected String ReadString(FileStream fileSream, int size)
+        protected String ReadString(Stream fileSream, int size)
         {
             byte[] myVar = new byte[size];
             fileSream.Read(myVar, 0, size);
             return System.Text.Encoding.UTF8.GetString(myVar);
         }
 
-        protected byte[] ReadBytes(FileStream fileSream, int size)
+        protected byte[] ReadBytes(Stream fileSream, int size)
         {
             byte[] myVar = new byte[size];
             fileSream.Read(myVar, 0, size);

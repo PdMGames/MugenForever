@@ -20,8 +20,12 @@ public class LogadImage : MonoBehaviour
         Image image = gameObject.GetComponent<Image>();
         image.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width, texture.height);
         image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 50f);
-
         
+        //flip
+        //image.transform.localScale = new Vector3(-1, 1, 1);
+
+
+
         Debug.Log(readPCXImage);
 
     }

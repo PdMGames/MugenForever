@@ -1,14 +1,7 @@
 using MugenForever.IO.PXC;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Numerics;
-using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.Rendering;
+using BinaryReader = MugenForever.Util.BinaryReader;
 
 // using Color = System.Drawing.Color;
 
@@ -36,11 +29,10 @@ Byte      Item          Size   Description/Comments
 72        VscreenSize   2     Vertical screen size in pixels. New field found only in PB IV/IV Plus 
 74        Filler        54    Blank to fill out 128 byte header.  Set all bytes to 0 
 */
-namespace MugenForever.IO.PCX {
+namespace MugenForever.IO.PCX
+{
     public class PCXImageImpl : IPCXImage
     {
-        private readonly PCXHeader _header;
-        private readonly Stream _data;
         private readonly int _headerSize = 128;
         private Texture2D _texture2D;
 
@@ -49,62 +41,58 @@ namespace MugenForever.IO.PCX {
             
         }
 
-        PCXImageImpl(Stream pcx, IPalette pallete)
+        PCXImageImpl(Stream data, IPalette pallete)
         {
-            _data = pcx;
-            BinaryReader binaryReader = new(_data);
 
-            _header = ReadHeader(binaryReader);
+            var header = ReadHeader(data);
 
-            pallete ??= new PaletteImpl(_data);
-            
-            binaryReader.BaseStream.Seek(_headerSize, SeekOrigin.Begin);
+            pallete ??= new PaletteImpl(data);
 
-            BuildImageToTexture(_data, pallete);
+            BuildImageToTexture(data, header, pallete);
 
-            Debug.Log(_header);
+            Debug.Log(header);
 
         }
 
-        private void BuildImageToTexture(Stream data, IPalette pallete)
+        private void BuildImageToTexture(Stream data, PCXHeader header, IPalette pallete)
         {
-            Texture2D texture = new(_header.Width, _header.Height, TextureFormat.ARGB32, false);
-            BinaryReader binaryReader = new(data);
+
+            BinaryReader.ReadJump(data, _headerSize, SeekOrigin.Begin);
+
+            Texture2D texture = new(header.Width, header.Height, TextureFormat.ARGB32, false);
 
             // size x and y
             var xmove = 0;
-            var ymove = _header.Height;
+            var ymove = header.Height;
 
             // set transparent canal.
             pallete.PalleteColor[0] = new Color32(0,0,0,0);
 
-            //Array.Reverse(pallete.PalleteColor);
-
             // read line y
             while (ymove >= 0)
             {
-                // verificar se há a necessidade de duplicar o próximo byte
-                int index = binaryReader.ReadByte();
+                int indexColor = BinaryReader.ReadInt(data, 1);
                 int count = 1;
 
+                // verificar se há a necessidade de duplicar o próximo byte
                 // verificar se os 2 primeiros bytes foram informados isso significa que os proximos 6 bytes representa o total de repicação
-                // mask 11000000 
-                // recupera o total de replicação
-                // mask 00111111
-                if ((index & 0xC0) == 0xC0)
+                // mask 11000000
+                if ((indexColor & 0xC0) == 0xC0)
                 {
-                    count = index & 0x3F;
-                    index = binaryReader.ReadByte();
+                    // recupera o total de replicação
+                    // mask 00111111
+                    count = indexColor & 0x3F;
+                    indexColor = BinaryReader.ReadInt(data, 1);
                 }
 
                 for (int i = 0; i < count; i++)
                 {
-                    if (xmove < _header.Width)
-                        texture.SetPixel(xmove, ymove, pallete.PalleteColor[index]);
+                    if (xmove < header.Width)
+                        texture.SetPixel(xmove, ymove, pallete.PalleteColor[indexColor]);
 
                     xmove++;
 
-                    if (xmove == _header.BytesPerLine)
+                    if (xmove == header.BytesPerLine)
                     {
                         xmove = 0;
                         ymove--;
@@ -112,47 +100,43 @@ namespace MugenForever.IO.PCX {
                     }
                 }
 
-
             }
 
             texture.Apply();
             _texture2D = texture;
         }
 
-        //<<summary>>
-        //    Read Header 128bytes
-        //<<summary>
-        private PCXHeader ReadHeader(BinaryReader binaryReader)
+        private PCXHeader ReadHeader(Stream stream)
         {
-            PCXHeader header = new()
+            PCXHeader header = new ()
             {
-                Manufacturer = binaryReader.ReadByte(),
-                Version = binaryReader.ReadByte(),
-                Encoding = binaryReader.ReadByte(),
-                BitsPerPixel = binaryReader.ReadByte(),
+                Manufacturer        = BinaryReader.ReadInt(stream, 1),
+                Version             = BinaryReader.ReadInt(stream, 1),
+                Encoding            = BinaryReader.ReadInt(stream, 1),
+                BitsPerPixel        = BinaryReader.ReadInt(stream, 1),
 
                 //window image dimensions
-                XStart = binaryReader.ReadInt16(),
-                YStart = binaryReader.ReadInt16(),
-                XEnd = binaryReader.ReadInt16(),
-                YEnd = binaryReader.ReadInt16(),
+                XStart              = BinaryReader.ReadInt(stream, 2),
+                YStart              = BinaryReader.ReadInt(stream, 2),
+                XEnd                = BinaryReader.ReadInt(stream, 2),
+                YEnd                = BinaryReader.ReadInt(stream, 2),
 
-                XDpi = binaryReader.ReadInt16(),
-                YDpi = binaryReader.ReadInt16(),
+                XDpi                = BinaryReader.ReadInt(stream, 2),
+                YDpi                = BinaryReader.ReadInt(stream, 2),
 
-                PaletteOfImage = binaryReader.ReadBytes(48),
-                Reserved = binaryReader.ReadByte(),
-                NPlanes = binaryReader.ReadByte(),
-                BytesPerLine = binaryReader.ReadInt16(),
-                PaletteInfo = binaryReader.ReadInt16(),
-                XScreenSize = binaryReader.ReadInt16(),
-                YScreenSize = binaryReader.ReadInt16(),
-                Filler = binaryReader.ReadBytes(54),
+                PaletteOfImage      = BinaryReader.ReadBytes(stream, 48),
+                Reserved            = BinaryReader.ReadInt(stream, 1),
+                NPlanes             = BinaryReader.ReadInt(stream, 1),
+                BytesPerLine        = BinaryReader.ReadInt(stream, 2),
+                PaletteInfo         = BinaryReader.ReadInt(stream, 2),
+                XScreenSize         = BinaryReader.ReadInt(stream, 2),
+                YScreenSize         = BinaryReader.ReadInt(stream, 2),
+                Filler              = BinaryReader.ReadBytes(stream, 54),
             };
 
-            header.Width = (header.XEnd - header.XStart) + 1;
-            header.Height = (header.YEnd - header.YStart) + 1;
-            header.TotalBytes = header.NPlanes * header.BytesPerLine;
+            header.Width        = (header.XEnd - header.XStart) + 1;
+            header.Height       = (header.YEnd - header.YStart) + 1;
+            header.TotalBytes   = header.NPlanes * header.BytesPerLine;
 
             return header;
         }
@@ -183,7 +167,6 @@ namespace MugenForever.IO.PCX {
             public int TotalBytes;
         }
 
-        public PCXHeader Header { get { return _header; } }
         public Texture2D Texture2D { get { return _texture2D; } }
     }
 }

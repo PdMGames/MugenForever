@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C8F5D9E7-65ED-DA57-065F-FFB2CF5F3506}</ProjectGuid>
+    <ProjectGuid>{34BC5C4B-817F-4BFA-90ED-4AF7040F87B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -58,10 +58,15 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\IO\PXC\Impl\PaletteImpl.cs" />
     <Compile Include="Assets\Scripts\IO\PXC\IPalette.cs" />
+    <Compile Include="Assets\Scripts\LoadSnd.cs" />
     <Compile Include="Assets\StartGame.cs" />
     <Compile Include="Assets\Scripts\IO\PXC\Impl\PCXImageImpl.cs" />
+    <Compile Include="Assets\Scripts\IO\SND\Impl\SNDImpl.cs" />
     <Compile Include="Assets\Scripts\LogadImage.cs" />
+    <Compile Include="Assets\Scripts\IO\SND\ISND.cs" />
+    <Compile Include="Assets\Scripts\Util\BinaryReader.cs" />
     <Compile Include="Assets\Scripts\IO\PXC\IPCXImage.cs" />
+    <Compile Include="Assets\Scripts\Util\WavUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -309,9 +314,6 @@
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity 2021.3.23f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
-    </Reference>
-    <Reference Include="Magick.NET.Core">
-      <HintPath>Assets\Plugins\Magick.NET.Core.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.8.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>

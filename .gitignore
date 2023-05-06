@@ -62,3 +62,6 @@ Thumbs.db.meta
 # VS Code
 *.vscode
 /Resources
+
+
+obj

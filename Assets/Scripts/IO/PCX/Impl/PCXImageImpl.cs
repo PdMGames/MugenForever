@@ -147,7 +147,8 @@ namespace MugenForever.IO.PCX
 
         private bool IsPaletteAttached(Stream data)
         {
-            var paletteAttached = data.Seek(IPalette.SIZE + 1, SeekOrigin.End);
+            data.Seek((IPalette.SIZE + 1) * -1, SeekOrigin.End);
+            var paletteAttached = data.ReadByte();
             return paletteAttached == IPalette.CODE_ATTACHED;
         }
 

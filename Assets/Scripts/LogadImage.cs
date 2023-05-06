@@ -1,5 +1,4 @@
 using MugenForever.IO.PCX;
-using MugenForever.IO.PXC;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,9 +8,11 @@ public class LogadImage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
         //ReadPCXImage pcx = new(File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForever\\sample_1280_853.pcx"));
-        using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForever\\kfm3.pcx");
-        
+        using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\mugen_2010\\chars\\kfm\\0-0.pcx");
+        //using FileStream pal = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForever\\kfm3.pcx");
+
         IPCXImage readPCXImage = new PCXImageImpl(st);
         Texture2D texture = readPCXImage.Texture2D;
         texture.filterMode = FilterMode.Point;
@@ -27,6 +28,7 @@ public class LogadImage : MonoBehaviour
 
 
         Debug.Log(readPCXImage);
+        */
 
     }
 

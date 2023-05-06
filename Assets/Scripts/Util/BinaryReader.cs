@@ -44,6 +44,12 @@ namespace MugenForever.Util
             return System.Text.Encoding.UTF8.GetString(myVar);
         }
 
+        public static byte ReadByte(Stream fileSream)
+        {
+            var binaryReader = new BinaryReaderSystem(fileSream);
+            return binaryReader.ReadByte();
+        }
+
         public static byte[] ReadBytes(Stream fileSream, int size)
         {
             byte[] myVar = new byte[size];

@@ -60,7 +60,7 @@ namespace MugenForever.IO.SND
             return header;
         }
 
-        private SNDSubHeader ReadSubRead(Stream data)
+        private SNDSubHeader ReadSubHeader(Stream data)
         {
             SNDSubHeader subHeader = new()
             {
@@ -84,7 +84,7 @@ namespace MugenForever.IO.SND
             {
                 BinaryReader.ReadJump(data, nextOffset, SeekOrigin.Begin);
                 
-                SNDSubHeader subHeader = ReadSubRead(data);
+                SNDSubHeader subHeader = ReadSubHeader(data);
                 nextOffset = subHeader.OffsetNextSubfile;
 
                 if (_sounds.ContainsKey(subHeader.Group))

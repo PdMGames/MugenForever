@@ -65,3 +65,6 @@ Thumbs.db.meta
 
 
 obj
+/Assets/Resources
+/Assembly-CSharp.csproj
+/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache

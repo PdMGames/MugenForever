@@ -9,8 +9,6 @@ public class PcxImporter : ScriptedImporter
 {
     public override void OnImportAsset(AssetImportContext ctx)
     {
-        Debug.Log(ctx.assetPath);
-
         FileStream fileStream = new FileStream(ctx.assetPath, FileMode.Open, FileAccess.Read);
         fileStream.Seek(0, SeekOrigin.Begin);
 

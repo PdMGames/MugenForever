@@ -9,5 +9,7 @@ namespace MugenForever.IO.PAL
         public const int CODE_ATTACHED = 12;
         public Color32[] PalleteColor { get; }
         public void Load(Stream pallete);
+        public void Load(Stream pallete, int size);
+
     }
 }

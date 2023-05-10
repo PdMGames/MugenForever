@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.IO;
 using UnityEngine;
 using BinaryReader = MugenForever.Util.BinaryReader;
@@ -22,14 +23,20 @@ namespace MugenForever.IO.PAL
 
         public void Load(Stream pallete)
         {
-            Color32[] palleteColor = new Color32[256];
-            pallete.Seek((_palletaSize * -1), SeekOrigin.End);
+            Load(pallete, IPalette.SIZE);
+        }
 
-            for (int i = 0; i < 256; i++)
+        public void Load(Stream pallete, int size)
+        {
+            int count = size / 3;
+            Color32[] palleteColor = new Color32[count];
+            pallete.Seek((size * -1), SeekOrigin.End);
+
+            for (int i = 0; i < count; i++)
             {
                 palleteColor[i] = new Color32(BinaryReader.ReadByte(pallete), BinaryReader.ReadByte(pallete), BinaryReader.ReadByte(pallete), 255);
             }
-            
+
             _paletteColor = palleteColor;
         }
 

@@ -1,7 +1,9 @@
 using MugenForever.IO.PAL;
 using System;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using BinaryReader = MugenForever.Util.BinaryReader;
 
 // using Color = System.Drawing.Color;
@@ -41,16 +43,14 @@ namespace MugenForever.IO.PCX
         {
         }
 
-        public PCXImageImpl(Stream data, IPalette pallete)
+        public PCXImageImpl(Stream data, IPalette palette)
         {
 
             BinaryReader.ReadJump(data, 0, SeekOrigin.Begin);
 
             var header = ReadHeader(data);
 
-            pallete ??= (IsPaletteAttached(data) ? new PaletteImpl(data) : throw new System.Exception("Não é possível renderizar imagem, não foi informado uma paleta de cor ou a imagem não possuí uma paleta anexa"));
-
-            BuildImageToTexture(data, header, pallete);
+            BuildImageToTexture(data, header, palette);
 
             Debug.Log(header);
 
@@ -61,53 +61,114 @@ namespace MugenForever.IO.PCX
 
             BinaryReader.ReadJump(data, _headerSize, SeekOrigin.Begin);
 
-            Texture2D texture = new(header.Width, header.Height, TextureFormat.ARGB32, false);
-            texture.filterMode = FilterMode.Point;
+            _texture2D = (header.Version == 5 &&  header.BitsPerPixel == 8 && header.NPlanes == 3)? 
+                         LoadTrueColor(data, header) : 
+                         LoadIndexed(data, header, palette);
+            
+        }        
 
-            // size x and y
-            var xmove = 0;
-            var ymove = header.Height;
+        private Texture2D LoadTrueColor(Stream data, PCXHeader header)
+        {
 
-            // set transparent canal.
-            palette.PalleteColor[0] = new Color32(0,0,0,0);
+            Texture2D texture = new(header.Width, header.Height, TextureFormat.RGB24, false);
+            byte[] red      = new byte[header.BytesPerLine];
+            byte[] green    = new byte[header.BytesPerLine];
+            byte[] blue     = new byte[header.BytesPerLine];
 
-            // read line y
-            while (ymove >= 0)
+            for (int y=0; y < header.Height; y++)
             {
-                int indexColor = BinaryReader.ReadInt(data, 1);
-                int count = 1;
-
-                // verificar se há a necessidade de duplicar o próximo byte
-                // verificar se os 2 primeiros bytes foram informados isso significa que os proximos 6 bytes representa o total de repicação
-                // mask 11000000
-                if ((indexColor & 0xC0) == 0xC0)
+                if (header.IsCompressed)
                 {
-                    // recupera o total de replicação
-                    // mask 00111111
-                    count = indexColor & 0x3F;
-                    indexColor = BinaryReader.ReadInt(data, 1);
+                    //N
+                    RLEDecode(data, red, header.BytesPerLine);
+                    RLEDecode(data, green, header.BytesPerLine);
+                    RLEDecode(data, blue, header.BytesPerLine);
                 }
 
-                for (int i = 0; i < count; i++)
+                for (int x=0; x < header.Width; x++)
                 {
-                    
-                    if (xmove < header.Width)
-                        texture.SetPixel(xmove, ymove, palette.PalleteColor[indexColor]);
+                    byte r = red[x];
+                    byte g = green[x];
+                    byte b = blue[x];
+                    texture.SetPixel(x, y, new Color32(r, g, b, 255));
+                }
+            }
 
-                    xmove++;
+            texture.Apply();
+            return texture;
+        }
+        private Texture2D LoadIndexed(Stream data, PCXHeader header, IPalette palette)
+        {
+            Texture2D texture = new(header.Width, header.Height, TextureFormat.RGBA32, false);
 
-                    if (xmove == header.BytesPerLine)
-                    {
-                        xmove = 0;
-                        ymove--;
-                        break;
-                    }
+
+            if (palette == null) {
+                
+                palette = new PaletteImpl();
+
+                if (header.BitsPerPixel ==1 && header.NPlanes == 4)
+                {
+                    palette.Load(new MemoryStream(header.PaletteOfImage), header.PaletteOfImage.Length);
+                }
+                else if(header.BitsPerPixel == 8 && header.NPlanes == 1)
+                {
+                    data.Seek(((IPalette.SIZE+1) * -1), SeekOrigin.End);
+
+                    if(!IsPaletteAttached(data)) 
+                        throw new System.Exception("Não foi possível ler a paleta de cores");
+
+                    palette.Load(data);
+
+                    // volta para o inicio do arquivo após leitura do header
+                    data.Seek(_headerSize, SeekOrigin.Begin);
+                }
+            }
+            else
+            {
+                Array.Reverse(palette.PalleteColor);
+            }
+
+            // transparent color
+            palette.PalleteColor[0] = new Color32(0, 0, 0, 0);
+
+            byte[] scanline = new byte[header.BytesPerLine];
+
+            for (int y = 0; y < header.Height; y++)
+            {
+                if (header.IsCompressed)
+                    RLEDecode(data, scanline, header.BytesPerLine);
+                
+                for (int x = 0; x < header.Width; x++)
+                {
+                    texture.SetPixel(x, y, palette.PalleteColor[scanline[x]]);
                 }
 
             }
 
             texture.Apply();
-            _texture2D = texture;
+            return texture;
+        }
+
+        private void RLEDecode(Stream data, byte[] scanline, int bytesPerLine)
+        {
+            int index = 0;
+            while (index < bytesPerLine && data.Position <= data.Length)
+            {
+                int count = 1;
+                byte value = BinaryReader.ReadByte(data);
+                // verificar se há a necessidade de duplicar o próximo byte
+                // verificar se os 2 primeiros bytes foram informados isso significa que os proximos 6 bytes representa o total de repicação
+                // mask 11000000
+                if ((value & 0xC0) == 0xC0)
+                {
+                    // recupera o total de replicação
+                    // mask 00111111
+                    count = value & 0x3F;
+                    value = BinaryReader.ReadByte(data);
+                }
+
+                for (int i = 0; i < count; i++) scanline[index++] = value;
+            }
         }
 
         private PCXHeader ReadHeader(Stream stream)
@@ -116,7 +177,7 @@ namespace MugenForever.IO.PCX
             {
                 Manufacturer        = BinaryReader.ReadInt(stream, 1),
                 Version             = BinaryReader.ReadInt(stream, 1),
-                Encoding            = BinaryReader.ReadInt(stream, 1),
+                IsCompressed        = BinaryReader.ReadBool(stream),
                 BitsPerPixel        = BinaryReader.ReadInt(stream, 1),
 
                 //window image dimensions
@@ -156,7 +217,7 @@ namespace MugenForever.IO.PCX
         {
             public int Manufacturer;
             public int Version;
-            public int Encoding;
+            public bool IsCompressed;
             public int BitsPerPixel;
             public int XStart;
             public int YStart;

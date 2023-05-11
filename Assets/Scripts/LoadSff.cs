@@ -20,26 +20,28 @@ namespace MugenForever.Scripts
         private void Start()
         {
             // SFF1.0
-           /* using FileStream sff = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm.sff");
+            using FileStream sff = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm.sff");
             using FileStream pal = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm.act");
 
             IPalette palette = new PaletteImpl(pal);
             // transparent color
             palette.PalleteColor[0] = new Color32(0, 0, 0, 0);
             Array.Reverse(palette.PalleteColor);
-            
+
             sffImpl = new SFFImpl(sff, palette);
             image = GameObject.FindObjectsByType<Image>(FindObjectsSortMode.InstanceID)[0];
 
             StartCoroutine(AnimationTest());
 
-            Debug.Log(sffImpl);*/
+            Debug.Log(sffImpl);
         }
 
         private IEnumerator AnimationTest()
         {
 
             Dictionary<int, SFFSprite> sprite;
+            SFFSprite sffSprite;
+            var transform = image.GetComponent<RectTransform>();
 
             while (true){
                 isKeyPress = Input.anyKey;
@@ -49,9 +51,11 @@ namespace MugenForever.Scripts
                     for (int i = 0; i < sprite.Count; i++)
                     {
                         if (!isKeyPress) break;
-                        Texture2D texture = sprite[i].PCX.Texture2D;
-                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width, texture.height);
-                        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 50f);
+                        sffSprite = sprite[i];
+                        Texture2D texture = sffSprite.PCX.Texture2D;
+                        transform.sizeDelta = new Vector2(texture.width, texture.height);
+                        transform.localPosition = new Vector2(sffSprite.AxisX, sffSprite.AxisY);
+                        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.0f, 0.0f), 100f);
                         yield return new WaitForSecondsRealtime(speed);
                         isKeyPress = Input.anyKey;
                     }
@@ -63,9 +67,11 @@ namespace MugenForever.Scripts
                     for (int i = 0; i < sprite.Count; i++)
                     {
                         if (!isKeyPress) break;
-                        Texture2D texture = sprite[i].PCX.Texture2D;
-                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width, texture.height);
-                        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 50f);
+                        sffSprite = sprite[i];
+                        Texture2D texture = sffSprite.PCX.Texture2D;
+                        transform.sizeDelta = new Vector2(texture.width, texture.height);
+                        transform.localPosition = new Vector2(sffSprite.AxisX, sffSprite.AxisY);
+                        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.0f, 0.0f), 100f);
                         yield return new WaitForSecondsRealtime(speed);
                         isKeyPress = Input.anyKey;
                     }
@@ -77,9 +83,11 @@ namespace MugenForever.Scripts
                     for (int i = 0; i < sprite.Count; i++)
                     {
                         if (isKeyPress) break;
-                        Texture2D texture = sprite[i].PCX.Texture2D;
-                        image.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width, texture.height);
-                        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 50f);
+                        sffSprite = sprite[i];
+                        Texture2D texture = sffSprite.PCX.Texture2D;                        
+                        transform.sizeDelta = new Vector2(texture.width, texture.height);
+                        transform.localPosition = new Vector2(sffSprite.AxisX, sffSprite.AxisY);
+                        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.0f, 0.0f), 100f);
                         yield return new WaitForSecondsRealtime(speed);
                         isKeyPress = Input.anyKey;
                     }

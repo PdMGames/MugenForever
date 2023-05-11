@@ -1,5 +1,6 @@
 using MugenForever.IO.PCX;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,8 @@ public class LogadImage : MonoBehaviour
         //RawImage image = gameObject.GetComponent<RawImage>();
         Image image = gameObject.GetComponent<Image>();
         image.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width, texture.height);
-        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 50f);
+        image.GetComponentInParent<Canvas>().pixelPerfect = true;
+        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.0f, 0.0f), 100f);
 
         //flip
         //image.transform.localScale = new Vector3(-1, 1, 1);

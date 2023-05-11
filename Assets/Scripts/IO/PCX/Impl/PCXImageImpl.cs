@@ -130,7 +130,7 @@ namespace MugenForever.IO.PCX
 
             byte[] scanline = new byte[header.BytesPerLine];
 
-            for (int y = 0; y < header.Height; y++)
+            for (int y = header.Height-1; y >= 0; y--)
             {
                 if (header.IsCompressed)
                     RLEDecode(data, scanline, header.BytesPerLine);

@@ -9,7 +9,6 @@ namespace MugenForever.IO.PAL
 
     {
         private Color32[] _paletteColor;
-        private readonly int _palletaSize = 768;
 
         public PaletteImpl()
         {

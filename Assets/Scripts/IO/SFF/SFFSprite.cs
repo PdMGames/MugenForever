@@ -1,5 +1,4 @@
 ﻿using MugenForever.IO.PCX;
-using System;
 
 namespace Assets.Scripts.IO.SFF
 {

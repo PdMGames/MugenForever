@@ -39,32 +39,31 @@ namespace MugenForever.IO.PCX
         private readonly int _headerSize = 128;
         private Texture2D _texture2D;
 
-        public PCXImageImpl(Stream data):this(data, null)
-        {
-        }
-
-        public PCXImageImpl(Stream data, IPalette palette)
+        public PCXImageImpl(Stream data, bool isTransparent = true, IPalette palette = null)
         {
 
             BinaryReader.ReadJump(data, 0, SeekOrigin.Begin);
 
             var header = ReadHeader(data);
 
-            BuildImageToTexture(data, header, palette);
+            BuildImageToTexture(data, header, isTransparent, palette);
 
             Debug.Log(header);
 
         }
 
-        private void BuildImageToTexture(Stream data, PCXHeader header, IPalette palette)
+        private void BuildImageToTexture(Stream data, PCXHeader header, bool isTransparent, IPalette palette)
         {
 
             BinaryReader.ReadJump(data, _headerSize, SeekOrigin.Begin);
 
             _texture2D = (header.Version == 5 &&  header.BitsPerPixel == 8 && header.NPlanes == 3)? 
                          LoadTrueColor(data, header) : 
-                         LoadIndexed(data, header, palette);
-            
+                         LoadIndexed(data, header, isTransparent, palette);
+
+            _texture2D.filterMode = FilterMode.Point;
+            _texture2D.wrapMode = TextureWrapMode.Clamp;
+
         }        
 
         private Texture2D LoadTrueColor(Stream data, PCXHeader header)
@@ -97,7 +96,7 @@ namespace MugenForever.IO.PCX
             texture.Apply();
             return texture;
         }
-        private Texture2D LoadIndexed(Stream data, PCXHeader header, IPalette palette)
+        private Texture2D LoadIndexed(Stream data, PCXHeader header, bool isTransparent, IPalette palette)
         {
             Texture2D texture = new(header.Width, header.Height, TextureFormat.RGBA32, false);
 
@@ -119,17 +118,15 @@ namespace MugenForever.IO.PCX
 
                     palette.Load(data);
 
+                    Array.Reverse(palette.PalleteColor);
+
                     // volta para o inicio do arquivo após leitura do header
                     data.Seek(_headerSize, SeekOrigin.Begin);
                 }
             }
-            else
-            {
-                Array.Reverse(palette.PalleteColor);
-            }
 
-            // transparent color
-            palette.PalleteColor[0] = new Color32(0, 0, 0, 0);
+            if(isTransparent)
+                palette.PalleteColor[0] = new Color32(0, 0, 0, 0);
 
             byte[] scanline = new byte[header.BytesPerLine];
 

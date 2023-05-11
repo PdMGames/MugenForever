@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.IO;
 using UnityEngine;
 using BinaryReader = MugenForever.Util.BinaryReader;
@@ -31,7 +30,7 @@ namespace MugenForever.IO.PAL
             Color32[] palleteColor = new Color32[count];
             pallete.Seek((size * -1), SeekOrigin.End);
 
-            for (int i = 0; i < count; i++)
+            for (int i = count-1; i >= 0; i--)
             {
                 palleteColor[i] = new Color32(BinaryReader.ReadByte(pallete), BinaryReader.ReadByte(pallete), BinaryReader.ReadByte(pallete), 255);
             }

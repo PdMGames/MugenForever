@@ -108,7 +108,7 @@ namespace MugenForever.IO.SFF
             st.Write(BinaryReader.ReadBytes(pcxData, (int)pcxData.Length));
             st.Close();*/
 
-            subHeader.PCX = (subHeader.LinkIndex == 0) ? new PCXImageImpl(pcxData, palette) : null;
+            subHeader.PCX = (subHeader.LinkIndex == 0) ? new PCXImageImpl(pcxData, true, palette) : null;
 
             
             return subHeader;

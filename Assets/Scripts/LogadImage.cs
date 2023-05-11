@@ -1,4 +1,3 @@
-using MugenForever.IO.PAL;
 using MugenForever.IO.PCX;
 using System.IO;
 using UnityEngine;
@@ -21,7 +20,6 @@ public class LogadImage : MonoBehaviour
 
         Texture2D texture = readPCXImage.Texture2D;
         texture.filterMode = FilterMode.Point;
-
         //RawImage image = gameObject.GetComponent<RawImage>();
         Image image = gameObject.GetComponent<Image>();
         image.GetComponent<RectTransform>().sizeDelta = new Vector2(texture.width, texture.height);

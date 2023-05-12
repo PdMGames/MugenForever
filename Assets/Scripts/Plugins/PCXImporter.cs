@@ -1,31 +1,76 @@
+using MugenForever.IO.PAL;
 using MugenForever.IO.PCX;
 using System.IO;
+using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
-[ScriptedImporter(1,"pcx")]
-public class PcxImporter : ScriptedImporter
+namespace MugenForever.Plugins
 {
 
-    public bool alphaIsTransparency = false;
-
-    public override void OnImportAsset(AssetImportContext ctx)
+    [ScriptedImporter(version: 2, ext: "pcx", AllowCaching = true)]
+    public class PcxImporter : ScriptedImporter
     {
-        FileStream fileStream = new(ctx.assetPath, FileMode.Open, FileAccess.Read);
+        [Header("Texture")]
+        [Tooltip("Alpha is transparency")]
+        public bool alphaIsTransparency = false;
+        [Tooltip("Filter mode")]
+        public FilterMode filterMode = FilterMode.Point;
+        [Tooltip("Wrap mode")]
+        public TextureWrapMode wrapMode = TextureWrapMode.Clamp;
+        [Tooltip("AnisoLevel")]
+        [Range(1, 16)]
+        public int anisoLevel = 1;
 
-        IPCXImage readPCXImage = new PCXImageImpl(fileStream);
-        Texture2D texture = readPCXImage.Texture2D;
-        texture.filterMode = FilterMode.Point;
-        texture.wrapMode = TextureWrapMode.Clamp;
-        texture.name = Path.GetFileName(ctx.assetPath);
-        texture.alphaIsTransparency = alphaIsTransparency;
+        [Header("Sprite")]
+        public bool createSprite = true;
+        public Vector2 pivot;
+        public float pixelSize = 100f;
+        public PaletteImpl pallete;
 
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), 100f);
-        sprite.name = texture.name;
+        public override void OnImportAsset(AssetImportContext ctx)
+        {
+            FileStream fileStream = new(ctx.assetPath, FileMode.Open, FileAccess.Read);
+            IPCXImage readPCXImage;
 
-        ctx.AddObjectToAsset("sprite", sprite);
-        ctx.AddObjectToAsset("main", texture);
-        ctx.SetMainObject(texture);
+            if (pallete)
+            {
+                Debug.Log("with palette");
+                readPCXImage = new PCXImageImpl(fileStream, pallete);
+            }
+            else
+            {
+                Debug.Log("without palette");
+                readPCXImage = new PCXImageImpl(fileStream);
+            }
+
+            Texture2D texture = readPCXImage.Texture2D;
+            texture.name = Path.GetFileName(ctx.assetPath);
+            texture.filterMode = filterMode;
+            texture.wrapMode = wrapMode;
+            texture.alphaIsTransparency = alphaIsTransparency;
+            texture.anisoLevel = anisoLevel;
+
+            ctx.AddObjectToAsset("texture", texture);
+            ctx.SetMainObject(texture);
+
+            if (createSprite)
+            {
+                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelSize);
+                sprite.name = texture.name;
+
+                ctx.AddObjectToAsset("sprite", sprite);
+            }
+        }
     }
 
+    [CustomEditor(typeof(PcxImporter), true)]
+    public class PCXImporterEditor : ScriptedImporterEditor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.DrawDefaultInspector();
+            base.ApplyRevertGUI();
+        }
+    }
 }

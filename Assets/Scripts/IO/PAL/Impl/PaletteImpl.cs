@@ -1,12 +1,14 @@
+using System;
 using System.IO;
 using UnityEngine;
 using BinaryReader = MugenForever.Util.BinaryReader;
 
 namespace MugenForever.IO.PAL
 {
-    public class PaletteImpl : IPalette
-
+    [CreateAssetMenu(menuName = "MugenForever/ColorTable")]
+    public class PaletteImpl : ScriptableObject, IPalette
     {
+        [SerializeField]
         private Color32[] _paletteColor;
 
         public PaletteImpl()

@@ -35,12 +35,10 @@ namespace MugenForever.Plugins
 
             if (pallete)
             {
-                Debug.Log("with palette");
-                readPCXImage = new PCXImageImpl(fileStream, pallete);
+                readPCXImage = new PCXImageImpl(fileStream, true, pallete);
             }
             else
             {
-                Debug.Log("without palette");
                 readPCXImage = new PCXImageImpl(fileStream);
             }
 

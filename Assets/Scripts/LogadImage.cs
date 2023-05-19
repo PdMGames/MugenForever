@@ -1,3 +1,4 @@
+using MugenForever.IO.PAL;
 using MugenForever.IO.PCX;
 using System.IO;
 using Unity.VisualScripting;
@@ -6,17 +7,22 @@ using UnityEngine.UI;
 
 public class LogadImage : MonoBehaviour
 {
+    public string PathPxc;
+
     // Start is called before the first frame update
     void Start()
     {
 
         //using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\sample_1280_853.pcx"); // RGB
-        //using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\0-3-rgb-transp.pcx"); // RGB
-        using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\0-3.pcx"); // INDEXED
+        //using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\0-3-rgb.pcx"); // RGB
+        //using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\0-3.pcx"); // INDEXED
+        using FileStream st = File.OpenRead(PathPxc);
+        //using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\commons-imaging\\src\\test\\data\\images\\pcx\\1\\3plane8bppCompressed.pcx");
 
-        //using FileStream pal = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm2.act"); // PALLETE EXTERNAL
 
-        //IPCXImage readPCXImage = new PCXImageImpl(st, new PaletteImpl(pal)); // com pal external
+        //using FileStream pal = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm4.act"); // PALLETE EXTERNAL
+
+        //IPCXImage readPCXImage = new PCXImageImpl(st, true, new PaletteImpl(pal)); // com pal external
         IPCXImage readPCXImage = new PCXImageImpl(st);
 
         Texture2D texture = readPCXImage.Texture2D;

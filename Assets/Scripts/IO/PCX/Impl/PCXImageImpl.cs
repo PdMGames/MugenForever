@@ -1,9 +1,16 @@
 using MugenForever.IO.PAL;
 using System;
 using System.IO;
+using System.Net;
+using System.Numerics;
+using Unity.Collections;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Profiling;
+using static MugenForever.IO.PCX.PCXImageImpl;
+using static UnityEditor.PlayerSettings.SplashScreen;
 using BinaryReader = MugenForever.Util.BinaryReader;
 
 // using Color = System.Drawing.Color;
@@ -57,45 +64,40 @@ namespace MugenForever.IO.PCX
 
             BinaryReader.ReadJump(data, _headerSize, SeekOrigin.Begin);
 
-            _texture2D = (header.Version == 5 &&  header.BitsPerPixel == 8 && header.NPlanes == 3)? 
+            _texture2D = (header.Version == 5 &&  header.BitsPerPixel == 8 && (header.NPlanes == 3 || header.NPlanes == 4))? 
                          LoadTrueColor(data, header) : 
                          LoadIndexed(data, header, isTransparent, palette);
 
             _texture2D.filterMode = FilterMode.Point;
             _texture2D.wrapMode = TextureWrapMode.Clamp;
 
-        }        
+        }
 
         private Texture2D LoadTrueColor(Stream data, PCXHeader header)
         {
-
             Texture2D texture = new(header.Width, header.Height, TextureFormat.RGB24, false);
-            byte[] red      = new byte[header.BytesPerLine];
-            byte[] green    = new byte[header.BytesPerLine];
-            byte[] blue     = new byte[header.BytesPerLine];
 
-            for (int y=0; y < header.Height; y++)
+            for (int y = header.Height-1; y >= 0; y--)
             {
-                if (header.IsCompressed)
-                {
-                    //N
-                    RLEDecode(data, red, header.BytesPerLine);
-                    RLEDecode(data, green, header.BytesPerLine);
-                    RLEDecode(data, blue, header.BytesPerLine);
-                }
 
-                for (int x=0; x < header.Width; x++)
+                int scanlineLength = header.BytesPerLine * header.NPlanes;
+                byte[] scanline = new byte[scanlineLength];
+                RLEDecode(data, scanline, header.IsCompressed);
+
+                for (int x = 0; x < header.Width; x++)
                 {
-                    byte r = red[x];
-                    byte g = green[x];
-                    byte b = blue[x];
+                    byte r = scanline[x];
+                    byte g = scanline[x + header.Width];
+                    byte b = scanline[x + (header.Width * 2)];
                     texture.SetPixel(x, y, new Color32(r, g, b, 255));
                 }
+
             }
 
             texture.Apply();
             return texture;
         }
+        
         private Texture2D LoadIndexed(Stream data, PCXHeader header, bool isTransparent, IPalette palette)
         {
             Texture2D texture = new(header.Width, header.Height, TextureFormat.RGBA32, false);
@@ -132,8 +134,7 @@ namespace MugenForever.IO.PCX
 
             for (int y = header.Height-1; y >= 0; y--)
             {
-                if (header.IsCompressed)
-                    RLEDecode(data, scanline, header.BytesPerLine);
+                RLEDecode(data, scanline, header.IsCompressed);
                 
                 for (int x = 0; x < header.Width; x++)
                 {
@@ -146,25 +147,34 @@ namespace MugenForever.IO.PCX
             return texture;
         }
 
-        private void RLEDecode(Stream data, byte[] scanline, int bytesPerLine)
+        private void RLEDecode(Stream data, byte[] scanline, bool isCompress)
         {
-            int index = 0;
-            while (index < bytesPerLine && data.Position <= data.Length)
+            if (isCompress)
             {
-                int count = 1;
-                byte value = BinaryReader.ReadByte(data);
-                // verificar se há a necessidade de duplicar o próximo byte
-                // verificar se os 2 primeiros bytes foram informados isso significa que os proximos 6 bytes representa o total de repicação
-                // mask 11000000
-                if ((value & 0xC0) == 0xC0)
+                int index = 0;
+                while (index < scanline.Length && data.Position < data.Length)
                 {
-                    // recupera o total de replicação
-                    // mask 00111111
-                    count = value & 0x3F;
-                    value = BinaryReader.ReadByte(data);
-                }
+                    int count = 1;
+                    byte value = BinaryReader.ReadByte(data);
 
-                for (int i = 0; i < count; i++) scanline[index++] = value;
+                    // verificar se há a necessidade de duplicar o próximo byte
+                    // verificar se os 2 primeiros bytes foram informados isso significa que os proximos 6 bytes representa o total de repicação
+                    // mask 11000000
+                    if ((value & 0xC0) == 0xC0)
+                    {
+                        // recupera o total de replicação
+                        // mask 00111111
+                        count = value & 0x3F;
+                        value = BinaryReader.ReadByte(data);
+                    }
+
+                    for (int i = 0; i < count; i++)
+                        if(index < scanline.Length) scanline[index++] = value;
+                }
+            }
+            else
+            {
+                scanline = BinaryReader.ReadBytes(data, scanline.Length);
             }
         }
 
@@ -196,9 +206,10 @@ namespace MugenForever.IO.PCX
                 Filler              = BinaryReader.ReadBytes(stream, 54),
             };
 
-            header.Width        = (header.XEnd - header.XStart) + 1;
-            header.Height       = (header.YEnd - header.YStart) + 1;
-            header.TotalBytes   = header.NPlanes * header.BytesPerLine;
+            header.Width                = (header.XEnd - header.XStart) + 1;
+            header.Height               = (header.YEnd - header.YStart) + 1;
+            header.TotalBytes           = header.NPlanes * header.BytesPerLine;
+            header.NumberTotalPixel     = header.Width * header.Height; 
 
             return header;
         }
@@ -234,8 +245,11 @@ namespace MugenForever.IO.PCX
             public int Height;
             public int sizeHeader = 128;
             public int TotalBytes;
+            public int NumberTotalPixel;
         }
 
         public Texture2D Texture2D => _texture2D;
+
+        //
     }
 }

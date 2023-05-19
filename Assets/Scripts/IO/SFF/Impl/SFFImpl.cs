@@ -118,7 +118,7 @@ namespace MugenForever.IO.SFF
         {
             _sprites = new();
             int nextOffset = header.OffsetFirstSubfile;
-            IPCXImage[] pcxLink = new IPCXImage[header.TotalImage];
+            //IPCXImage[] pcxLink = new IPCXImage[header.TotalImage];
             Array.Reverse(palette.PalleteColor);
 
             for (int i=0; i<header.TotalImage; i++)
@@ -132,13 +132,15 @@ namespace MugenForever.IO.SFF
                     AxisY       = subHeader.AxisY,
                     Group       = subHeader.Group,
                     Index       = subHeader.Index,
-                    LinkIndex   = subHeader.LinkIndex,
                     PCX         = subHeader.PCX,
                 };
 
                 // link image
-                if (sprite.LinkIndex != 0)
-                    sprite.PCX = pcxLink[sprite.LinkIndex];
+                if (subHeader.Size == 0 && subHeader.LinkIndex != 0)
+                {
+                    sprite.IsLinkedImage = true;
+                    sprite.PCX = _sprites[subHeader.Group][subHeader.Index - 1].PCX;
+                }
 
                 if (_sprites.ContainsKey(subHeader.Group))
                 {
@@ -154,7 +156,7 @@ namespace MugenForever.IO.SFF
                     _sprites.Add(subHeader.Group, sprites);
                 }
 
-                pcxLink[i] = sprite.PCX;
+                //pcxLink[i] = sprite.PCX;
             }
         }
 

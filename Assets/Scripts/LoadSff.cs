@@ -20,7 +20,7 @@ namespace MugenForever.Scripts
         private void Start()
         {
             // SFF1.0
-            using FileStream sff = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm.sff");
+           /* using FileStream sff = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm.sff");
             using FileStream pal = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\winmugen_2003\\chars\\kfm\\kfm.act");
 
             IPalette palette = new PaletteImpl(pal);
@@ -33,7 +33,7 @@ namespace MugenForever.Scripts
 
             StartCoroutine(AnimationTest());
 
-            Debug.Log(sffImpl);
+            Debug.Log(sffImpl);*/
         }
 
         private IEnumerator AnimationTest()

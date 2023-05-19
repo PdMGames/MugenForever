@@ -9,8 +9,8 @@ namespace Assets.Scripts.IO.SFF
         public int Index;
         public int AxisX;
         public int AxisY;
-        // index link same image
-        public int LinkIndex;
+        //link image
+        public bool IsLinkedImage;
         public IPCXImage PCX;
 
     }

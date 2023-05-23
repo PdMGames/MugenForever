@@ -46,6 +46,11 @@ namespace MugenForever.IO.PCX
         private readonly int _headerSize = 128;
         private Texture2D _texture2D;
 
+        public PCXImageImpl(Stream data, IPalette palette) : this(data, true, palette)
+        {
+
+        }
+
         public PCXImageImpl(Stream data, bool isTransparent = true, IPalette palette = null)
         {
 
@@ -75,7 +80,7 @@ namespace MugenForever.IO.PCX
 
         private Texture2D LoadTrueColor(Stream data, PCXHeader header)
         {
-            Texture2D texture = new(header.Width, header.Height, TextureFormat.RGB24, false);
+            Texture2D texture = new(header.Width, header.Height, TextureFormat.RGB24, true);
 
             for (int y = header.Height-1; y >= 0; y--)
             {
@@ -100,7 +105,7 @@ namespace MugenForever.IO.PCX
         
         private Texture2D LoadIndexed(Stream data, PCXHeader header, bool isTransparent, IPalette palette)
         {
-            Texture2D texture = new(header.Width, header.Height, TextureFormat.RGBA32, false);
+            Texture2D texture = new(header.Width, header.Height, TextureFormat.RGBA32, true);
 
 
             if (palette == null) {

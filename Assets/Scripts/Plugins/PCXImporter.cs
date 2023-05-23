@@ -1,14 +1,18 @@
 using MugenForever.IO.PAL;
 using MugenForever.IO.PCX;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace MugenForever.Plugins
 {
 
     [ScriptedImporter(version: 2, ext: "pcx", AllowCaching = true)]
+    [RequireComponent(typeof(RawImage))]
     public class PcxImporter : ScriptedImporter
     {
         [Header("Texture")]
@@ -27,6 +31,8 @@ namespace MugenForever.Plugins
         public Vector2 pivot;
         public float pixelSize = 100f;
         public PaletteImpl pallete;
+        
+
 
         public override void OnImportAsset(AssetImportContext ctx)
         {
@@ -35,7 +41,7 @@ namespace MugenForever.Plugins
 
             if (pallete)
             {
-                readPCXImage = new PCXImageImpl(fileStream, true, pallete);
+                readPCXImage = new PCXImageImpl(fileStream, pallete);
             }
             else
             {
@@ -52,12 +58,16 @@ namespace MugenForever.Plugins
             ctx.AddObjectToAsset("texture", texture);
             ctx.SetMainObject(texture);
 
+           
+
             if (createSprite)
             {
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelSize);
                 sprite.name = texture.name;
+                
+                //image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelSize);
 
-                ctx.AddObjectToAsset("sprite", sprite);
+                //ctx.AddObjectToAsset("sprite", sprite);
             }
         }
     }

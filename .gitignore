@@ -61,10 +61,4 @@ Thumbs.db.meta
 
 # VS Code
 *.vscode
-/Resources
-
-
 obj
-/Assets/Resources
-/Assembly-CSharp.csproj
-/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache

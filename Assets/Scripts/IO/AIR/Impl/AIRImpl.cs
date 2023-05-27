@@ -260,128 +260,158 @@ namespace MugenForever.AIR
 
             // Crie um StringBuilder para construir o JSON
             StringBuilder sb = new StringBuilder();
-            sb.Append("{");
+            sb.Append("{\n");
 
             // Adicione cada AIRAction individualmente ao JSON
             foreach (var action in _groups)
             {
-                sb.Append("\"Name\": \"" + action.Name + "\", ");
-                sb.Append("\"Action\": " + action.Action + ", ");
-                sb.Append("\"Frames\": [");
+                sb.Append("\t\"Name\": \"" + action.Name + "\",\n");
+                sb.Append("\t\"Action\": " + action.Action + ",\n");
+                sb.Append("\t\"Frames\": [\n");
 
                 // Adicione cada AIRFrame individualmente ao JSON
                 foreach (var frame in action.Frames)
                 {
-                    sb.Append("{");
-                    sb.Append("\"Group\": " + frame.Group + ", ");
-                    sb.Append("\"Index\": " + frame.Index + ", ");
-                    sb.Append("\"AxisX\": " + frame.AxisX + ", ");
-                    sb.Append("\"AxisY\": " + frame.AxisY + ", ");
-                    sb.Append("\"Time\": " + frame.Time + ", ");
-                    sb.Append("\"Flip\": \"" + frame.Flip.ToString() + "\", ");
-                    sb.Append("\"StartLoop\": " + frame.StartLoop.ToString().ToLower() + ", ");
-                    sb.Append("\"BoxCollisionDefaults\": [");
+                    sb.Append("\t\t{\n");
+                    sb.Append("\t\t\t\"Group\": " + frame.Group + ",\n");
+                    sb.Append("\t\t\t\"Index\": " + frame.Index + ",\n");
+                    sb.Append("\t\t\t\"AxisX\": " + frame.AxisX + ",\n");
+                    sb.Append("\t\t\t\"AxisY\": " + frame.AxisY + ",\n");
+                    sb.Append("\t\t\t\"Time\": " + frame.Time + ",\n");
+                    sb.Append("\t\t\t\"Flip\": \"" + frame.Flip.ToString() + "\",\n");
+                    sb.Append("\t\t\t\"StartLoop\": " + frame.StartLoop.ToString().ToLower() + ",\n");
+                    sb.Append("\t\t\t\"BoxCollisionDefaults\": ");
 
-                    // Adicione cada BoxCollision individualmente ao JSON
-                    if (frame.BoxCollisionDefaults != null)
+                    if (frame.BoxCollisionDefaults == null)
                     {
+                        sb.Append("null,\n");
+                    }
+                    else
+                    {
+                        sb.Append("[\n");
+
+                        // Adicione cada BoxCollision individualmente ao JSON
                         for (int i = 0; i < frame.BoxCollisionDefaults.Length; i++)
                         {
                             var boxCollision = frame.BoxCollisionDefaults[i];
-                            sb.Append("{");
-                            sb.Append("\"Width\": " + boxCollision.Width + ", ");
-                            sb.Append("\"Height\": " + boxCollision.Height + ", ");
-                            sb.Append("\"AxisX\": " + boxCollision.AxisX + ", ");
-                            sb.Append("\"AxisY\": " + boxCollision.AxisY);
-                            sb.Append("}");
+                            sb.Append("\t\t\t\t{\n");
+                            sb.Append("\t\t\t\t\t\"Width\": " + boxCollision.Width + ",\n");
+                            sb.Append("\t\t\t\t\t\"Height\": " + boxCollision.Height + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisX\": " + boxCollision.AxisX + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisY\": " + boxCollision.AxisY + "\n");
+                            sb.Append("\t\t\t\t}");
 
                             // Adicione vírgula entre os elementos, exceto o último
                             if (i < frame.BoxCollisionDefaults.Length - 1)
-                                sb.Append(", ");
+                                sb.Append(",\n");
                         }
+
+                        sb.Append("\n\t\t\t],\n");
                     }
 
-                    sb.Append("], ");
-                    sb.Append("\"BoxAttackDefaults\": [");
+                    sb.Append("\t\t\t\"BoxAttackDefaults\": ");
 
-                    // Adicione cada BoxCollision individualmente ao JSON
-                    if (frame.BoxAttackDefaults != null)
+                    if (frame.BoxAttackDefaults == null)
                     {
+                        sb.Append("null,\n");
+                    }
+                    else
+                    {
+                        sb.Append("[\n");
+
+                        // Adicione cada BoxCollision individualmente ao JSON
                         for (int i = 0; i < frame.BoxAttackDefaults.Length; i++)
                         {
                             var boxCollision = frame.BoxAttackDefaults[i];
-                            sb.Append("{");
-                            sb.Append("\"Width\": " + boxCollision.Width + ", ");
-                            sb.Append("\"Height\": " + boxCollision.Height + ", ");
-                            sb.Append("\"AxisX\": " + boxCollision.AxisX + ", ");
-                            sb.Append("\"AxisY\": " + boxCollision.AxisY);
-                            sb.Append("}");
+                            sb.Append("\t\t\t\t{\n");
+                            sb.Append("\t\t\t\t\t\"Width\": " + boxCollision.Width + ",\n");
+                            sb.Append("\t\t\t\t\t\"Height\": " + boxCollision.Height + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisX\": " + boxCollision.AxisX + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisY\": " + boxCollision.AxisY + "\n");
+                            sb.Append("\t\t\t\t}");
 
                             // Adicione vírgula entre os elementos, exceto o último
                             if (i < frame.BoxAttackDefaults.Length - 1)
-                                sb.Append(", ");
+                                sb.Append(",\n");
                         }
+
+                        sb.Append("\n\t\t\t],\n");
                     }
 
-                    sb.Append("], ");
-                    sb.Append("\"BoxCollisions\": [");
+                    sb.Append("\t\t\t\"BoxCollisions\": ");
 
-                    // Adicione cada BoxCollision individualmente ao JSON
-                    if (frame.BoxCollisions != null)
+                    if (frame.BoxCollisions == null)
                     {
+                        sb.Append("null,\n");
+                    }
+                    else
+                    {
+                        sb.Append("[\n");
+
+                        // Adicione cada BoxCollision individualmente ao JSON
                         for (int i = 0; i < frame.BoxCollisions.Length; i++)
                         {
                             var boxCollision = frame.BoxCollisions[i];
-                            sb.Append("{");
-                            sb.Append("\"Width\": " + boxCollision.Width + ", ");
-                            sb.Append("\"Height\": " + boxCollision.Height + ", ");
-                            sb.Append("\"AxisX\": " + boxCollision.AxisX + ", ");
-                            sb.Append("\"AxisY\": " + boxCollision.AxisY);
-                            sb.Append("}");
+                            sb.Append("\t\t\t\t{\n");
+                            sb.Append("\t\t\t\t\t\"Width\": " + boxCollision.Width + ",\n");
+                            sb.Append("\t\t\t\t\t\"Height\": " + boxCollision.Height + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisX\": " + boxCollision.AxisX + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisY\": " + boxCollision.AxisY + "\n");
+                            sb.Append("\t\t\t\t}");
 
                             // Adicione vírgula entre os elementos, exceto o último
                             if (i < frame.BoxCollisions.Length - 1)
-                                sb.Append(", ");
+                                sb.Append(",\n");
                         }
+
+                        sb.Append("\n\t\t\t],\n");
                     }
 
-                    sb.Append("], ");
-                    sb.Append("\"BoxAttacks\": [");
+                    sb.Append("\t\t\t\"BoxAttacks\": ");
 
-                    // Adicione cada BoxCollision individualmente ao JSON
-                    if (frame.BoxAttacks != null)
+                    if (frame.BoxAttacks == null)
                     {
+                        sb.Append("null\n");
+                    }
+                    else
+                    {
+                        sb.Append("[\n");
+
+                        // Adicione cada BoxCollision individualmente ao JSON
                         for (int i = 0; i < frame.BoxAttacks.Length; i++)
                         {
                             var boxCollision = frame.BoxAttacks[i];
-                            sb.Append("{");
-                            sb.Append("\"Width\": " + boxCollision.Width + ", ");
-                            sb.Append("\"Height\": " + boxCollision.Height + ", ");
-                            sb.Append("\"AxisX\": " + boxCollision.AxisX + ", ");
-                            sb.Append("\"AxisY\": " + boxCollision.AxisY);
-                            sb.Append("}");
+                            sb.Append("\t\t\t\t{\n");
+                            sb.Append("\t\t\t\t\t\"Width\": " + boxCollision.Width + ",\n");
+                            sb.Append("\t\t\t\t\t\"Height\": " + boxCollision.Height + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisX\": " + boxCollision.AxisX + ",\n");
+                            sb.Append("\t\t\t\t\t\"AxisY\": " + boxCollision.AxisY + "\n");
+                            sb.Append("\t\t\t\t}");
 
                             // Adicione vírgula entre os elementos, exceto o último
                             if (i < frame.BoxAttacks.Length - 1)
-                                sb.Append(", ");
+                                sb.Append(",\n");
                         }
+
+                        sb.Append("\n\t\t\t]\n");
                     }
 
-                    sb.Append("}");
+                    sb.Append("\t\t}");
 
                     // Adicione vírgula entre os elementos, exceto o último
                     if (frame != action.Frames[action.Frames.Count - 1])
-                        sb.Append(", ");
+                        sb.Append(",\n");
                 }
 
-                sb.Append("]");
+                sb.Append("\n\t]");
 
                 // Adicione vírgula entre os elementos, exceto o último
                 if (action != _groups.Last())
-                    sb.Append(", ");
+                    sb.Append(",\n");
             }
 
-            sb.Append("}");
+            sb.Append("\n}");
+
             return sb.ToString();
         }
 

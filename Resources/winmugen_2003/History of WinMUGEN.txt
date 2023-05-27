@@ -1,0 +1,45 @@
+Before using, please take time to read how and why this WinMUGEN hack was made. Even though it was ethically wrong, Elecbyte themselves has dissapeared from the scene and the computer systems that has support for DOS MUGEN is fast dwindling. This gave no other alternative than to forcibly allow all functions of the original WinMUGEN, which runs faster and optimally on new-generation computers. We hope that you will understand.
+
+===================
+HISTORY OF WINMUGEN
+===================
+
+As you probably know, Elecbyte asked for donations for their WinMUGEN project, to buy a software compiler. Then, on April 14 2004, they released MUGEN for Linux, abandoning DOS MUGEN.
+
+Those who donated were e-mailed a secret link to a password-protected website that contained a downloadable private beta version of WinMUGEN.
+
+WinMUGEN is the same as Linux MUGEN, except for the following.
+
+1. A transparent box with the following message:
+"M.U.G.E.N 2002.04.14 PRIVATE MU TEST.
+DISTRIBUTION STRICTLY PROHIBITED.
+THANK YOU FOR PARTICIPATING IN THIS TEST."
+
+2. Limited Features.
+It accepted only 2 characters to be on the select screen at the same time. It also had limitations for the number of stages, and most play modes were disabled. There was no full motif support either.
+
+The people who received the WinMUGEN beta had to agree never to talk about it.
+
+But, as time passed, an unknown number of people had been giving out their user names, passwords and links for WinMUGEN.
+
+Elecbyte noticed the increased number of logins or the increased bandwidth and removed the links. The links were replaced with a poem. This poem was about people doing something they should not be doing.
+
+Some time later, the first public hack of the WinMUGEN version appeared on the Internet.
+
+http://www.geocities.com/elecbyte1 and http://www.geocities.com/elecbyte1/winmugen.html
+
+The version of WinMUGEN was 2002.04.14, but it was modified and hacked. It had the blue box removed, and the version number changed to "M.U.G.E.N 2003 Beta V3.08.2 w2003.06.14b". "Elecbyte" in the main menu had been changed to "Elecbyte1".
+
+What really made Elecbyte close their page in November 2003 after they announced they had encountered a "snag" in development is still unknown. The reason might be leaks and the WinMUGEN hack, but it is only speculation. Also, out of the thousands of people in MUGEN, only a handful really showed enough support to donate.
+
+Despite indications, Elecbyte cannot be accused of "abandoning" the community. If anything, it was the other way round. Leaks and hacks disrespected and abandoned Elecbyte. More and more people were complaining about how they "needed" WinMUGEN, and that WinMUGEN would never be done, when in fact WinMUGEN already existed in secret. It existed at least since early 2002.
+
+In those years since 2002, the circle of people who had the original, unaltered WinMUGEN were silent, except for the individuals who leaked and hacked. When the hack was discovered, the common policy was to keep silent. Out of respect for Elecbyte's wishes, the hack was not promoted, and people doing so were "persecuted."
+
+Most of the people who received the WinMUGEN beta from Elecbyte kept it a secret. It has been only recently that more and more information on WinMUGEN has been made available.
+
+The reason why people are now talking openly about it is simple: The obvious reason not to talk about WinMUGEN was because Elecbyte prohibited it. Elecbyte would certainly NOT release WinMUGEN to the public if their beta-testers would betray them. So they kept quiet.
+
+But by now, Elecbyte has been gone for a long time. Should they ever choose to return, the community will gladly welcome them back. But for now, just about everyone is convinced that "the community" is left to themselves. People who have been formerly against leaking of WinMUGEN and modifying WinMUGEN now support it, due to the disapearance of Elecbyte, and no official release of WinMUGEN. It was decided so by many of us, for the sake of the whole MUGEN community as a whole, transcending places, races and abilities.
+
+Less and less computers are supporting DOS. Many MUGEN creators are now part of elitist circles who barely progress anymore and keep mostly to themselves, also because of the lack of the ability to run MUGEN in modern computers. Elecbyte's unannounced disappearance and the profound reality of DOS MUGEN malfunctioning in modern systems and operating systems such as Windows 2000, Windows XP and above is the prime reason why the WinMUGEN hack has been made and produced. It was a hard desicion, but there was simply no other choice. With this, the legacy of MUGEN and the MUGEN community will be assured that it can continue to thrive in the future.

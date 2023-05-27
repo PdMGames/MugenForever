@@ -1,0 +1,80 @@
+-----------------------------
+about unoficial no-limit Winmugen patch
+by : rouhei
+-----------------------------
+
+no-limit patch is limit cancel patch for Winmugen20414.
+  1. Cancel character limit ( 2 > 65535 )
+  2. Cancel mode limit
+  3. Cancel 10 minutes limit
+  4. Remove 2005/7 red bar alert 
+  5. fix random stage shutdown error
+  6. Some force debug mode fix (change null font to some fix)
+      + Fix force debug font in VS scene and Select scene
+      + Eneble erase debug screen from Ctrl-D
+      + Disable force debug screen in round start
+      + Disable force life value in lifebar
+  7. fix team coop 1p mode bug
+
+I did successful cancel character limit of WINMUGEN.
+but...
+if I do release to public, does people get angry ? 
+
+no limit patch have not permission of elecbyte.
+yes. this unoficial patch conflict with a elecbyte license.
+
+but, 2 years passed since new mugen was not released.
+and  1 years passed since elecbyte website was close & no announcement.  
+
+I think that..... 
+Elecbyte maybe does not revive some time.
+and new mugen maybe will not be released.
+
+if official is closed forever, if official have never intention 
+of release Winmugen , we can not but remake & patching.
+I think so. winmugen of way is only it.
+Somebody surely fix limit in future , even if I do not fix now.
+is it wrong ? 
+
+no limit Winmugen is so easy .
+people of non DOS environment, a lot of new user , new peoples & 
+beginners can enjoy non limit winmugen
+I want more a lot of people to enjoy wonderfull mugen.
+I hope it only.
+it only..
+
+
+
+
+
+please dont angry.
+please enjoy it... :)
+
+rouhei june 10 2004
+roh_hei@yahoo.co.jp
+http://unofficial-winmugen.jpn.org/
+http://winmugen.jpn.org/
+
+
+
+if you want stop of release to public , please send 
+your view to roh_hei@yahoo.co.jp . 
+I will read it seriously & think & send reply to you.
+
+
+
+
+-----------------------
+about stop release
+-----------------------
+
+I love fighting games & mugen , and I hope revival of elecbyte.
+if official warn hack version, I stop release this patch.  
+
+if elecbyte revive or elecbyte is alive  , 
+anyways , I stop release this patch to public. 
+
+if official is available , hack version is needless.
+
+
+

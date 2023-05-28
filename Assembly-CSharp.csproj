@@ -56,23 +56,37 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\IO\PAL\Impl\PaletteImpl.cs" />
-    <Compile Include="Assets\Scripts\IO\PAL\IPalette.cs" />
-    <Compile Include="Assets\Scripts\LoadSnd.cs" />
-    <Compile Include="Assets\Scripts\IO\SFF\ISFF.cs" />
-    <Compile Include="Assets\Scripts\Util\WavUtility.cs" />
-    <Compile Include="Assets\Scripts\IO\SFF\SFFSprite.cs" />
-    <Compile Include="Assets\Scripts\IO\SFF\Impl\SFFImpl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\PAL\Impl\PaletteImpl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\PAL\IPalette.cs" />
+    <Compile Include="Assets\Mugen\Scripts\LoadSnd.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Plugins\ActImporter.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Plugins\PCXImporter.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SFF\ISFF.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Util\WavUtility.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SFF\SFFSprite.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SFF\Impl\SFFImpl.cs" />
     <Compile Include="Assets\StartGame.cs" />
-    <Compile Include="Assets\Scripts\LoadSff.cs" />
-    <Compile Include="Assets\Scripts\IO\PCX\Impl\PCXImageImpl.cs" />
-    <Compile Include="Assets\Scripts\IO\SND\Impl\SNDImpl.cs" />
-    <Compile Include="Assets\Scripts\IO\SFF\Impl\SFF2Impl.cs" />
-    <Compile Include="Assets\Scripts\IO\SFF\ISFF2.cs" />
-    <Compile Include="Assets\Scripts\LogadImage.cs" />
-    <Compile Include="Assets\Scripts\IO\SND\ISND.cs" />
-    <Compile Include="Assets\Scripts\Util\BinaryReader.cs" />
-    <Compile Include="Assets\Scripts\IO\PCX\IPCXImage.cs" />
+    <Compile Include="Assets\Mugen\Scripts\LoadSff.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\PCX\Impl\PCXImageImpl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SND\Impl\SNDImpl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SFF\Impl\SFF2Impl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SFF\ISFF2.cs" />
+    <Compile Include="Assets\Mugen\Scripts\LogadImage.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\SND\ISND.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Util\BinaryReader.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\PCX\IPCXImage.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\CMD\Impl\CMDImpl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Util\ReaderConfig.cs" />
+    <Compile Include="Assets\Mugen\Scripts\LoadAir.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\AIR\Impl\AIRImpl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Animation\AnimationCreator.cs" />
+    <Compile Include="Assets\Mugen\Scripts\ExecuteAnimationTest.cs" />
+    <Compile Include="Assets\SapphiArt\SapphiArtchan\Scripts\SapphiArtChan_AnimManager.cs" />
+    <Compile Include="Assets\SapphiArt\SapphiArtchan\Scripts\AnimationManagerUI.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Transparence.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\example\kfm\readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

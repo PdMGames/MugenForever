@@ -1,4 +1,6 @@
-﻿using MugenForever.Util;
+﻿using Assets.Mugen.Scripts.IO.AIR;
+using MugenForever.IO.AIR;
+using MugenForever.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +11,15 @@ using UnityEngine;
 
 namespace MugenForever.AIR
 {
-    internal class AIRImpl
+    internal class AIRStateImpl : IAIRState
     {
-        private HashSet<AIRAction> _groups = new();
+        private HashSet<AIRState> _groups = new();
 
-        public AIRImpl(ReaderConfig data)
+        public AIRStateImpl(ReaderConfig data)
         {
             foreach (var group in data.Groups)
             {
-                AIRAction action = new();
+                AIRState action = new();
                 var value = group.Value[0];
 
                 if (data.IsAddLastComment && value[0].StartsWith("COM[") && value[0].EndsWith("]"))
@@ -197,7 +199,7 @@ namespace MugenForever.AIR
                             Index = int.Parse(frameIndex),
                             AxisX = int.Parse(axisX),
                             AxisY = int.Parse(axisY),
-                            Time = int.Parse(time),
+                            Time = float.Parse(time),
                             BoxAttackDefaults = boxAttackDefaults,
                             BoxCollisionDefaults = boxCollisionDefaults,
                             BoxAttacks = boxAttacks,
@@ -215,44 +217,6 @@ namespace MugenForever.AIR
 
             // Imprima o JSON
             Debug.Log(json());
-        }
-
-        public class AIRAction
-        {
-            public string Name;
-            public int Action;
-            public List<AIRFrame> Frames;
-        }
-
-        public class AIRFrame
-        {
-            public int Group;
-            public int Index;
-            public int AxisX;
-            public int AxisY;
-            public int Time;
-            public FlipType Flip;
-            public bool StartLoop;
-            public BoxCollision[] BoxCollisionDefaults;
-            public BoxCollision[] BoxAttackDefaults;
-            public BoxCollision[] BoxCollisions;
-            public BoxCollision[] BoxAttacks;
-
-            public enum FlipType
-            {
-                NONE,
-                H,
-                V,
-                HV
-            }
-
-            public class BoxCollision
-            {
-                public int Width;
-                public int Height;
-                public int AxisX;
-                public int AxisY;
-            }
         }
 
         public string json()
@@ -416,6 +380,7 @@ namespace MugenForever.AIR
             return sb.ToString();
         }
 
+        public HashSet<AIRState> States { get { return _groups; } }
 
     }
 

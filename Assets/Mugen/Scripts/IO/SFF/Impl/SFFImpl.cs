@@ -123,7 +123,7 @@ namespace MugenForever.IO.SFF
             int nextOffset = header.OffsetFirstSubfile;
             //IPCXImage[] pcxLink = new IPCXImage[header.TotalImage];
             //Array.Reverse(palette.PalleteColor);
-            IPCXImage lastPXC = null;
+            Sprite lastSprite = null;
 
             for (int i = 0; i < header.TotalImage; i++)
             {
@@ -137,14 +137,18 @@ namespace MugenForever.IO.SFF
                     AxisY = subHeader.AxisY,
                     Group = subHeader.Group,
                     Index = subHeader.Index,
-                    PCX = subHeader.PCX,
                 };
 
                 // link image
                 if (subHeader.Size == 0 && subHeader.LinkIndex != 0)
                 {
                     sprite.IsLinkedImage = true;
-                    sprite.PCX = lastPXC;
+                    sprite.Sprite = lastSprite;
+                    sprite.Sprite.name = string.Format("{0}_{1}", subHeader.Group, subHeader.Index);
+                }
+                else
+                {
+                    sprite.Sprite = CreateSprite(subHeader);
                 }
 
                 if (_sprites.ContainsKey(subHeader.Group))
@@ -161,8 +165,16 @@ namespace MugenForever.IO.SFF
                     _sprites.Add(subHeader.Group, sprites);
                 }
 
-                lastPXC = sprite.PCX;
+                lastSprite = sprite.Sprite;
             }
+        }
+
+        private Sprite CreateSprite(SFFSubHeader subHeader)
+        {
+            Texture2D texture = subHeader.PCX.Texture2D;
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0f, 1f), 100f);
+            sprite.name = string.Format("{0}_{1}", subHeader.Group, subHeader.Index);
+            return sprite;
         }
 
         public class SFFHeader
@@ -184,8 +196,8 @@ namespace MugenForever.IO.SFF
         {
             public int OffsetNextSubfile;
             public int Size;
-            public int AxisX;
-            public int AxisY;
+            public float AxisX;
+            public float AxisY;
             public int Group;
             public int Index;
             public int LinkIndex;

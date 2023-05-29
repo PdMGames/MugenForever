@@ -59,8 +59,11 @@
     <Compile Include="Assets\Mugen\Scripts\IO\PAL\Impl\PaletteImpl.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\PAL\IPalette.cs" />
     <Compile Include="Assets\Mugen\Scripts\LoadSnd.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\AIR\AIRFrame.cs" />
     <Compile Include="Assets\Mugen\Scripts\Plugins\ActImporter.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\AIR\AIRState.cs" />
     <Compile Include="Assets\Mugen\Scripts\Plugins\PCXImporter.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Transparence.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\SFF\ISFF.cs" />
     <Compile Include="Assets\Mugen\Scripts\Util\WavUtility.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\SFF\SFFSprite.cs" />
@@ -70,20 +73,19 @@
     <Compile Include="Assets\Mugen\Scripts\IO\PCX\Impl\PCXImageImpl.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\SND\Impl\SNDImpl.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\SFF\Impl\SFF2Impl.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\AIR\Impl\AIRStateImpl.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\SFF\ISFF2.cs" />
+    <Compile Include="Assets\SapphiArt\SapphiArtchan\Scripts\SapphiArtChan_AnimManager.cs" />
+    <Compile Include="Assets\Mugen\Scripts\LoadAir.cs" />
     <Compile Include="Assets\Mugen\Scripts\LogadImage.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\SND\ISND.cs" />
+    <Compile Include="Assets\Mugen\Scripts\Util\ReaderConfig.cs" />
     <Compile Include="Assets\Mugen\Scripts\Util\BinaryReader.cs" />
     <Compile Include="Assets\Mugen\Scripts\IO\PCX\IPCXImage.cs" />
-    <Compile Include="Assets\Mugen\Scripts\IO\CMD\Impl\CMDImpl.cs" />
-    <Compile Include="Assets\Mugen\Scripts\Util\ReaderConfig.cs" />
-    <Compile Include="Assets\Mugen\Scripts\LoadAir.cs" />
-    <Compile Include="Assets\Mugen\Scripts\IO\AIR\Impl\AIRImpl.cs" />
-    <Compile Include="Assets\Mugen\Scripts\Animation\AnimationCreator.cs" />
-    <Compile Include="Assets\Mugen\Scripts\ExecuteAnimationTest.cs" />
-    <Compile Include="Assets\SapphiArt\SapphiArtchan\Scripts\SapphiArtChan_AnimManager.cs" />
     <Compile Include="Assets\SapphiArt\SapphiArtchan\Scripts\AnimationManagerUI.cs" />
-    <Compile Include="Assets\Mugen\Scripts\Transparence.cs" />
+    <Compile Include="Assets\Mugen\Scripts\ExecuteAnimationTest.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\AIR\IAIRState.cs" />
+    <Compile Include="Assets\Mugen\Scripts\IO\CMD\Impl\CMDImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\example\kfm\readme.txt" />

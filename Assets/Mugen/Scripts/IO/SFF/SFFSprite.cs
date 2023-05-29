@@ -1,4 +1,4 @@
-﻿using MugenForever.IO.PCX;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.IO.SFF
 {
@@ -11,7 +11,7 @@ namespace Assets.Scripts.IO.SFF
         public float AxisY;
         //link image
         public bool IsLinkedImage;
-        public IPCXImage PCX;
+        public Sprite Sprite;
 
     }
 }

@@ -57,15 +57,12 @@ namespace MugenForever.Plugins
             ctx.SetMainObject(texture);
 
 
-
             if (createSprite)
             {
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelSize);
+                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0f, 1f), pixelSize);
                 sprite.name = texture.name;
 
-                //image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelSize);
-
-                //ctx.AddObjectToAsset("sprite", sprite);
+                ctx.AddObjectToAsset("sprite", sprite);
             }
         }
     }

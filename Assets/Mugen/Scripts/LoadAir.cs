@@ -14,7 +14,7 @@ namespace MugenForever.Scripts
 
             ReaderConfig config = new(fs);
 
-            new AIRImpl(config);
+            new AIRStateImpl(config);
         }
 
     }

@@ -11,7 +11,7 @@ namespace MugenForever.Scripts
         private AudioSource _audioSource;
         private void Start()
         {
-            using FileStream st = File.OpenRead("C:\\erick.leao\\desenv\\unity3d\\MugenForeverOld\\Resources\\mugen_2010\\chars\\kfm\\kfm.snd");
+            using FileStream st = File.OpenRead("Resources\\mugen_2010\\chars\\kfm\\kfm.snd");
             ISND snd = new SNDImpl(st);
 
             AudioSource audioSource = GetComponent<AudioSource>();

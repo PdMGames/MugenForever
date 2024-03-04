@@ -7,4 +7,12 @@ ScriptedImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {instanceID: 0}
+  script: {fileID: 11500000, guid: ffd629233cbd9ac468739ed1c8bcbc62, type: 3}
+  alphaIsTransparency: 0
+  filterMode: 0
+  wrapMode: 1
+  anisoLevel: 1
+  createSprite: 1
+  pivot: {x: 0, y: 0}
+  pixelSize: 100
+  pallete: {instanceID: 0}

@@ -46,22 +46,46 @@ namespace MugenForever
             }
         }
 
-        [ContextMenu("Load From File")]
-        public void LoadInEditor()
-        {
-            string file = EditorUtility.OpenFilePanel("Select Mugen DEF Char File", "", "def");
+        // [ContextMenu("Load From File")] // Removido pois EditorUtility não funciona em build
+        // public void LoadInEditor()
+        // {
+        //     // string file = EditorUtility.OpenFilePanel("Select Mugen DEF Char File", "", "def");
+        //     // if (file.Length != 0)
+        //     // {
+        //     //    Load(file); // Chamaria o novo método Load
+        //     // }
+        // }
 
-            if (file.Length != 0)
+        public bool Load(string pathFile)
+        {
+            if (string.IsNullOrEmpty(pathFile) || !System.IO.File.Exists(pathFile))
             {
-                ReadFromFile(file);
-                fileName = file;
+                Debug.LogError($"[DefChar.Load] Error: File not found or path is null/empty: {pathFile}");
+                return false;
+            }
+            fileName = pathFile; // Store the filename
+            try
+            {
+                ReadFromFile(pathFile);
+                // Consider a load successful if essential data like displayname is populated.
+                return !string.IsNullOrEmpty(this.displayname);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[DefChar.Load] Exception while loading DEF file '{pathFile}': {ex.Message}\n{ex.StackTrace}");
+                return false;
             }
         }
-
-        public override void ReadFromFile(string file)
+        
+        // ReadFromFile é mantido como protected ou private, chamado por Load.
+        // O 'override' sugere que é de uma classe base MugenForever.Reader.Text
+        // Vamos assumir que a classe base permite que este método seja chamado e não requer que seja 'public override'
+        // Se ReadFromFile for da classe base e for public, podemos simplesmente chamá-lo.
+        // Por agora, vamos tornar este método o core da lógica de leitura.
+        protected void ReadFromFile(string file) // Mudado de public override para protected
         {
             string text = System.IO.File.ReadAllText(file);
-            pal.Clear();
+            if (pal == null) pal = new List<string>(); else pal.Clear();
             st.Clear();
 
             List<string> lines = new List<string>();
@@ -73,7 +97,7 @@ namespace MugenForever
             }
         }
 
-        protected void ParseLine(string line)
+        protected virtual void ParseLine(string line) // Adicionado virtual se a classe base tiver um ParseLine que possa ser chamado
         {
             if (line.Contains("=") )
             {
@@ -106,26 +130,47 @@ namespace MugenForever
         {
             try
             {
-                //default unity variable "name" not work with reflection
-                if (variable == "name")
+                //default unity variable "name" (herdado de UnityEngine.Object) não deve ser usado para displayname.
+                // O campo 'name' da classe DefChar é o correto.
+                // Se a classe DefChar herda de UnityEngine.Object, this.name se refere ao nome do GameObject.
+                // No entanto, o DefChar.cs fornecido não parece herdar de MonoBehaviour, então this.name é seguro.
+                // Apenas garantindo que 'displayname' seja usado quando se refere ao nome de exibição do char.
+
+                System.Type T = this.GetType(); // Usar GetType() para suportar herança se houver
+                System.Reflection.FieldInfo field = T.GetField(variable, 
+                    System.Reflection.BindingFlags.Instance | 
+                    System.Reflection.BindingFlags.Public | 
+                    System.Reflection.BindingFlags.IgnoreCase); // Tornar a busca de campo mais flexível
+
+                if (field != null)
                 {
-                    name = value;
-
-                    return;
+                    try
+                    {
+                        // Tratar conversões de tipo se necessário, por exemplo, para 'localcoord' se fosse um Vector3
+                        if (field.FieldType == typeof(string))
+                        {
+                            field.SetValue(this, value);
+                        }
+                        // Adicionar mais conversões se outros tipos de campos forem usados
+                        else
+                        {
+                            Debug.LogWarning($"[DefChar.SetVariable] Field '{variable}' is not a string. Type is {field.FieldType}. Value '{value}' not set by reflection directly.");
+                        }
+                    }
+                    catch (System.ArgumentException argEx)
+                    {
+                        Debug.LogError($"[DefChar.SetVariable] ArgumentException for field '{variable}', value '{value}': {argEx.Message}");
+                    }
                 }
-
-                System.Type T = typeof(DefChar);
-
-                System.Reflection.FieldInfo reflectionField = T.GetField(variable);
-                //int tmp = (int)reflectionField.GetValue(this);
-
-                reflectionField.SetValue(this, value);
+                else
+                {
+                    // Debug.LogWarning($"[DefChar.SetVariable] Field '{variable}' not found in class {T.Name}.");
+                }
             }
             catch (System.Exception ex)
             {
-                Debug.Log("Error="+variable+" - "+ex.Message);                
+                Debug.LogError($"[DefChar.SetVariable] Error setting variable '{variable}' to value '{value}': {ex.Message}");
             }
-            
         }
     }
 }

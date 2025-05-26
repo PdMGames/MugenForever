@@ -69,62 +69,60 @@ namespace MugenForever.Sff
         {
             FileStream fileStream = new FileStream(pathFile, FileMode.Open, FileAccess.Read);
 
-            // Setando o ponteiro para o inico do arquivo
-            fileStream.Seek(0, SeekOrigin.Begin);
+            System.IO.BinaryReader binaryReader = new System.IO.BinaryReader(fileStream);
+            // fileStream.Seek(0, SeekOrigin.Begin); // BinaryReader starts at the beginning
 
-            signature = ReadString(fileStream, 12);
-            version = String.Format("{3}.{2}.{1}.{0}", ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1));
+            signature = new string(binaryReader.ReadChars(12));
+            version = String.Format("{3}.{2}.{1}.{0}", binaryReader.ReadByte(), binaryReader.ReadByte(), binaryReader.ReadByte(), binaryReader.ReadByte());
 
             // Pula 
-            ReadJump(fileStream, 8);
+            binaryReader.BaseStream.Seek(8, SeekOrigin.Current); // Skip 8 reserved bytes
 
-            //  totalGroups = ReadInt(fileStream, 4);
-            compatVerLoad = String.Format("{3}.{2}.{1}.{0}", ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1), ReadInt(fileStream, 1));
+            // totalGroups = binaryReader.ReadInt32(); // This was commented out in original
+            compatVerLoad = String.Format("{3}.{2}.{1}.{0}", binaryReader.ReadByte(), binaryReader.ReadByte(), binaryReader.ReadByte(), binaryReader.ReadByte());
             
             // Jump reserved bytes
-            ReadJump(fileStream, 8);
+            binaryReader.BaseStream.Seek(8, SeekOrigin.Current); // Skip 8 reserved bytes
 
-            offsetSubFile = ReadInt(fileStream, 4);
-            totalImage = ReadInt(fileStream, 4);
+            offsetSubFile = binaryReader.ReadInt32();
+            totalImage = binaryReader.ReadInt32();
 
-            offsetPaletteFile = ReadInt(fileStream, 4);
-            totalPalette = ReadInt(fileStream, 4);
+            offsetPaletteFile = binaryReader.ReadInt32();
+            totalPalette = binaryReader.ReadInt32();
 
-            offsetLData = ReadInt(fileStream, 4);
-            sizeLData = ReadInt(fileStream, 4);
+            offsetLData = binaryReader.ReadInt32();
+            sizeLData = binaryReader.ReadInt32();
 
-            offsetTData = ReadInt(fileStream, 4);
-            sizeTData = ReadInt(fileStream, 4);
+            offsetTData = binaryReader.ReadInt32();
+            sizeTData = binaryReader.ReadInt32();
 
             // Jump reserved bytes
-            ReadJump(fileStream, 8);
+            binaryReader.BaseStream.Seek(8, SeekOrigin.Current); // Skip 8 reserved bytes
 
-            comments = ReadString(fileStream, 436);
+            comments = new string(binaryReader.ReadChars(436));
 
-            fileStream.Seek(offsetSubFile, SeekOrigin.Begin);
+            binaryReader.BaseStream.Seek(offsetSubFile, SeekOrigin.Begin); // Seek to the first sprite node
 
             sprites = new List<SffSprite>();
             spriteList = new Dictionary<int, Dictionary<int, SffSprite>>();
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < totalImage; i++) // Corrected loop to iterate all images
             {
                 SffSprite spr = new SffSprite();
 
-                //spr.nextFileOffset = ReadInt(fileStream, 4);
-                //spr.subfileLength = ReadInt(fileStream, 4);
-                spr.groupNumber = ReadInt(fileStream, 2);
-                spr.imageNumber = ReadInt(fileStream, 2);
+                spr.groupNumber = binaryReader.ReadInt16();
+                spr.imageNumber = binaryReader.ReadInt16();
 
-                spr.width = ReadInt(fileStream, 2);
-                spr.height = ReadInt(fileStream, 2);
+                spr.width = binaryReader.ReadInt16();
+                spr.height = binaryReader.ReadInt16();
 
-                spr.axisX = ReadInt(fileStream, 2);
-                spr.axisY = ReadInt(fileStream, 2);                
+                spr.axisX = binaryReader.ReadInt16();
+                spr.axisY = binaryReader.ReadInt16();                
                 
-                spr.indexPreviousLinked = ReadInt(fileStream, 2);
-                spr.index = i + 1;
+                spr.indexPreviousLinked = binaryReader.ReadInt16();
+                spr.index = i + 1; // Assuming index is 1-based and corresponds to loop iteration
 
-                spr.fmt = ReadInt(fileStream, 1);
+                spr.fmt = binaryReader.ReadByte();
                 
                 CompressorType compressorType = CompressorType.RAW;
                 if (Enum.IsDefined(typeof(CompressorType), spr.fmt))
@@ -132,39 +130,58 @@ namespace MugenForever.Sff
 
                 Compressor compressor = CompressorFactory.getCompressor(compressorType);
 
-                spr.coldepth = ReadInt(fileStream, 1);
-
-                spr.offsetData = ReadInt(fileStream, 4);
-
-                spr.subfileLength = ReadInt(fileStream, 4);
+                spr.coldepth = binaryReader.ReadByte();
+                spr.offsetData = binaryReader.ReadInt32();
+                spr.subfileLength = binaryReader.ReadInt32();
+                spr.paletteIndex = binaryReader.ReadInt16();
+                spr.flag = binaryReader.ReadInt16();
 
                 if (spr.subfileLength == 0 && spr.indexPreviousLinked != 0 && sprites.Exists(sff => sff.index == spr.indexPreviousLinked))
                 {
-                    spr.subfileLength = sprites[spr.indexPreviousLinked].subfileLength;
-                    spr.pcx = sprites[spr.indexPreviousLinked].pcx;                    
+                    // This is a linked sprite. Copy data from the source sprite.
+                    // Note: SffSprite might need to be a class, and pcx might need deep copy if it's mutable.
+                    SffSprite sourceSprite = sprites.Find(sff => sff.index == spr.indexPreviousLinked);
+                    if (sourceSprite != null)
+                    {
+                        spr.pcx = sourceSprite.pcx; // This should be fine if Pcx holds immutable data or is correctly shared
+                        spr.image = sourceSprite.image; // Share the Texture2D
+                        spr.width = sourceSprite.width;
+                        spr.height = sourceSprite.height;
+                        // other relevant fields can be copied if necessary
+                    }
+                    else
+                    {
+                        // Potentially log a warning if a linked sprite points to a non-existing index
+                        Debug.LogWarningFormat("SFFv2: Linked sprite {0},{1} points to non-existent index {2}", spr.groupNumber, spr.imageNumber, spr.indexPreviousLinked);
+                    }
                 }
-                else
+                else if (spr.subfileLength > 0)
                 {
-                    // mover para a possição
-                    fileStream.Seek(spr.offsetData, SeekOrigin.Begin);
-                    byte[] imageBytes = ReadBytes(fileStream, spr.subfileLength);
+                    long currentPosition = binaryReader.BaseStream.Position; // Save position after reading sprite node
+                    
+                    long imageDataFileOffset = ((spr.flag & 0x01) == 0) ? offsetLData : offsetTData;
+                    imageDataFileOffset += spr.offsetData;
+                    
+                    binaryReader.BaseStream.Seek(imageDataFileOffset, SeekOrigin.Begin);
+                    byte[] imageBytes = binaryReader.ReadBytes(spr.subfileLength);
 
                     if (compressor != null)
+                    {
                         imageBytes = compressor.descompress(imageBytes);
+                    }
 
-                    spr.pcx.load(new MemoryStream(imageBytes));
-                    spr.image = spr.pcx.image;
+                    // Assuming spr.pcx is initialized (e.g., in SffSprite constructor)
+                    // It's safer to initialize it here if not: if(spr.pcx == null) spr.pcx = new Pcx();
+                    if (spr.pcx == null) spr.pcx = new Pcx(); // Ensure pcx object exists
+
+                    spr.pcx.load(new MemoryStream(imageBytes)); // Pcx class needs to handle this
+                    spr.image = spr.pcx.image; // Texture should be created within Pcx.load
+
+                    binaryReader.BaseStream.Seek(currentPosition, SeekOrigin.Begin); // Restore position to read next sprite node
                 }
+                // If subfileLength is 0 and not linked, it's an empty sprite, pcx and image remain null/default.
 
-                spr.image = spr.pcx.image;
-
-                spr.paletteIndex = ReadInt(fileStream, 2);
-                spr.flag = ReadInt(fileStream, 2);
-
-                // mover para a possição
-                //fileStream.Seek(spr.offsetData + spr.subfileLength, SeekOrigin.Begin);
-
-                spr.name = spr.groupNumber + "-" + spr.imageNumber + " " + spr.comments;
+                spr.name = spr.groupNumber + "-" + spr.imageNumber; // Removed " " + spr.comments as spr.comments is for the SFF file, not individual sprites
 
                 spr.sprite = new Sprite();
 

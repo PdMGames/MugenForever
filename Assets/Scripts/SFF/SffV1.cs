@@ -11,47 +11,78 @@ using UnityEditor;
 /// </summary>
 namespace MugenForever.Sff
 {
-    public class SffV1 : Sff
+    // SffV1 não herda mais de Sff (que agora é estático) nem de MonoBehaviour.
+    public class SffV1 
     {
-        [ContextMenu("Load From File")]
-        public void LoadInEditor()
-        {
-            string file = EditorUtility.OpenFilePanel("Select Mugen SFF Char File", "", "sff");
+        // Campos que eram da classe Sff base ou que são específicos do SFFv1
+        // Estes serão lidos e depois transferidos para SffInfo.
+        private string signature;
+        private byte verLo3, verLo2, verLo1, verHi; // Componentes da versão
+        private int totalGroups;
+        private int totalImage;
+        private int offsetSubFile;
+        // private int sizeSubFileHeader; // Não parece ser usado diretamente em SffInfo
+        // private int paletteType; // Não parece ser usado diretamente em SffInfo
+        private string comments;
+        
+        // A lista de sprites será construída e adicionada diretamente ao sffInfo.sprites
+        // private List<SffSprite> localSprites = new List<SffSprite>(); // Lista local temporária
+        // private Dictionary<int, Dictionary<int, SffSprite>> localSpriteList = new Dictionary<int, Dictionary<int, SffSprite>>();
 
-            if (file.Length != 0)
-            {
-                ReadFromFile(file);
+
+        // Removido LoadInEditor pois EditorUtility não funciona em build
+        // e a classe não é mais um MonoBehaviour.
+
+        public void ReadFromFile(string pathFile, SffInfo sffInfo)
+        {
+            if (sffInfo == null) {
+                Debug.LogError("[SffV1.ReadFromFile] Error: sffInfo object is null.");
+                return;
             }
-        }
 
-        public override void ReadFromFile(string pathFile)
-        {
-            FileStream fileStream = new FileStream(pathFile, FileMode.Open, FileAccess.Read);
-            // set the pointer in start of file
-            fileStream.Seek(0, SeekOrigin.Begin);
-
-            System.IO.BinaryReader binaryReader = new System.IO.BinaryReader(fileStream);
-
-            signature = new string(binaryReader.ReadChars(12));//.ReadString(fileStream, 12);
-            version = String.Format("{3}.{2}.{1}.{0}", binaryReader.ReadByte(), binaryReader.ReadByte(), binaryReader.ReadByte(), binaryReader.ReadByte());
-            totalGroups = binaryReader.ReadInt32();
-            totalImage = binaryReader.ReadInt32();
-            offsetSubFile = binaryReader.ReadInt32();
-            sizeSubFileHeader = binaryReader.ReadInt32();
-            paletteType = binaryReader.ReadByte();
-            binaryReader.BaseStream.Seek(3,SeekOrigin.Current);
-            //ReadJump(fileStream, 3); //blank space
-            int lenghtComments = 512 - Int32.Parse(binaryReader.BaseStream.Position.ToString());
-            comments = new string(binaryReader.ReadChars(lenghtComments));
-
-            sprites = new List<SffSprite>();
-            spriteList = new Dictionary<int, Dictionary<int, SffSprite>>();
-
-            for (int i = 0; i < totalImage; i++)
+            using (FileStream fileStream = new FileStream(pathFile, FileMode.Open, FileAccess.Read))
             {
-                SffSprite spr = new SffSprite();
+                using (System.IO.BinaryReader binaryReader = new System.IO.BinaryReader(fileStream))
+                {
+                    signature = new string(binaryReader.ReadChars(12));
+                    verLo3 = binaryReader.ReadByte();
+                    verLo2 = binaryReader.ReadByte();
+                    verLo1 = binaryReader.ReadByte();
+                    verHi = binaryReader.ReadByte();
 
-                spr.nextFileOffset = binaryReader.ReadInt32();
+                    sffInfo.verLo3 = verLo3.ToString();
+                    sffInfo.verLo2 = verLo2.ToString();
+                    sffInfo.verLo1 = verLo1.ToString();
+                    sffInfo.verHi = verHi.ToString();
+                    
+                    totalGroups = binaryReader.ReadInt32();
+                    totalImage = binaryReader.ReadInt32();
+                    offsetSubFile = binaryReader.ReadInt32();
+                    /* sizeSubFileHeader = */ binaryReader.ReadInt32();
+                    /* paletteType = */ binaryReader.ReadByte();
+                    binaryReader.BaseStream.Seek(3, SeekOrigin.Current); // Skip blank space
+
+                    int currentPosForComments = (int)binaryReader.BaseStream.Position;
+                    int lengthComments = 512 - currentPosForComments;
+                    if (lengthComments < 0) lengthComments = 0; // Sanity check
+                    comments = new string(binaryReader.ReadChars(lengthComments));
+                    // sffInfo.comments = comments; // SffInfo não tem campo comments atualmente
+
+                    // Ir para o início dos dados dos sprites
+                    binaryReader.BaseStream.Seek(offsetSubFile, SeekOrigin.Begin);
+
+                    // sffInfo.sprites já foi inicializado em SffInfo constructor
+                    // Dictionary local para ajudar a resolver sprites vinculados
+                    List<SffSprite> tempSpriteListForLinking = new List<SffSprite>();
+
+
+                    for (int i = 0; i < totalImage; i++)
+                    {
+                        SffSprite spr = new SffSprite();
+                        // Posição atual é o início do cabeçalho do subarquivo do sprite
+                        long currentSpriteNodeStartOffset = binaryReader.BaseStream.Position;
+
+                        spr.nextFileOffset = binaryReader.ReadInt32();
                 spr.subfileLength = binaryReader.ReadInt32();
 
                 spr.axisX = binaryReader.ReadInt16();

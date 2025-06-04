@@ -64,12 +64,12 @@ namespace MugenForever.Character
             }
 
             AirFrame currentAirFrame = currentAnimation.Frames[currentFrameIndex];
-            
+
             // Se a duração for -1 (loop infinito no frame), não avançar o timer nem o frame.
             if (currentAirFrame.Duration == -1)
             {
                 // Debug.Log($"ANIM_UPDATE: Frame {currentFrameIndex} da Action {currentAnimation.ActionNumber} tem duração -1 (infinito).");
-                return; 
+                return;
             }
 
             frameTimer += Time.deltaTime * 60.0f; // Assumindo 60 ticks por segundo (padrão MUGEN)
@@ -82,7 +82,7 @@ namespace MugenForever.Character
                     // Animação terminou. Por enquanto, vamos parar no último quadro.
                     // Poderíamos implementar LoopStart aqui ou repetir.
                     // Debug.Log($"ANIM_UPDATE: Animação {currentAnimation.ActionNumber} terminou. Parando no último frame (índice {currentFrameIndex-1}).");
-                    currentFrameIndex = currentAnimation.Frames.Count - 1; 
+                    currentFrameIndex = currentAnimation.Frames.Count - 1;
                     currentAnimation = null; // Para a animação
                     return;
                 }
@@ -99,7 +99,7 @@ namespace MugenForever.Character
             }
 
             AirFrame frameToShow = currentAnimation.Frames[currentFrameIndex];
-            
+
             // Encontra o SffSprite correspondente no SffData
             currentSffSprite = sffData.sprites.Find(s => s.groupNumber == frameToShow.GroupNumber && s.imageNumber == frameToShow.ImageNumber);
 
@@ -107,8 +107,8 @@ namespace MugenForever.Character
             {
                 spriteRenderer.sprite = currentSffSprite.sprite;
                 spriteRenderer.flipX = frameToShow.HorizontalFlip;
-                spriteRenderer.flipY = frameToShow.VerticalFlip; 
-                
+                spriteRenderer.flipY = frameToShow.VerticalFlip;
+
                 // Garantir FilterMode.Point para a textura do sprite atual
                 if (currentSffSprite.texture != null && currentSffSprite.texture.filterMode != FilterMode.Point)
                 {
@@ -120,7 +120,7 @@ namespace MugenForever.Character
             {
                 string spriteDetails = currentSffSprite == null ? "não encontrado no SFF" : "encontrado mas UnityEngine.Sprite é null";
                 Debug.LogError($"ANIM_FRAME_ERROR: Sprite G{frameToShow.GroupNumber},I{frameToShow.ImageNumber} {spriteDetails}.");
-                spriteRenderer.sprite = null; 
+                spriteRenderer.sprite = null;
             }
         }
     }

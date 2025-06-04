@@ -12,7 +12,7 @@ using UnityEditor;
 namespace MugenForever.Sff
 {
     // SffV1 não herda mais de Sff (que agora é estático) nem de MonoBehaviour.
-    public class SffV1 
+    public class SffV1
     {
         // Campos que eram da classe Sff base ou que são específicos do SFFv1
         // Estes serão lidos e depois transferidos para SffInfo.
@@ -24,7 +24,7 @@ namespace MugenForever.Sff
         // private int sizeSubFileHeader; // Não parece ser usado diretamente em SffInfo
         // private int paletteType; // Não parece ser usado diretamente em SffInfo
         private string comments;
-        
+
         // A lista de sprites será construída e adicionada diretamente ao sffInfo.sprites
         // private List<SffSprite> localSprites = new List<SffSprite>(); // Lista local temporária
         // private Dictionary<int, Dictionary<int, SffSprite>> localSpriteList = new Dictionary<int, Dictionary<int, SffSprite>>();
@@ -54,7 +54,7 @@ namespace MugenForever.Sff
                     sffInfo.verLo2 = verLo2.ToString();
                     sffInfo.verLo1 = verLo1.ToString();
                     sffInfo.verHi = verHi.ToString();
-                    
+
                     totalGroups = binaryReader.ReadInt32();
                     totalImage = binaryReader.ReadInt32();
                     offsetSubFile = binaryReader.ReadInt32();

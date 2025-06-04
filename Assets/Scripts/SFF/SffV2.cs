@@ -117,7 +117,7 @@ namespace MugenForever.Sff
                 spr.height = binaryReader.ReadInt16();
 
                 spr.axisX = binaryReader.ReadInt16();
-                spr.axisY = binaryReader.ReadInt16();                
+                spr.axisY = binaryReader.ReadInt16();
                 
                 spr.indexPreviousLinked = binaryReader.ReadInt16();
                 spr.index = i + 1; // Assuming index is 1-based and corresponds to loop iteration
@@ -158,10 +158,10 @@ namespace MugenForever.Sff
                 else if (spr.subfileLength > 0)
                 {
                     long currentPosition = binaryReader.BaseStream.Position; // Save position after reading sprite node
-                    
+
                     long imageDataFileOffset = ((spr.flag & 0x01) == 0) ? offsetLData : offsetTData;
                     imageDataFileOffset += spr.offsetData;
-                    
+
                     binaryReader.BaseStream.Seek(imageDataFileOffset, SeekOrigin.Begin);
                     byte[] imageBytes = binaryReader.ReadBytes(spr.subfileLength);
 

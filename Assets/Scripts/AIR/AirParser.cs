@@ -23,15 +23,15 @@ namespace MugenForever.AIR
             // Regex para identificar o início de uma Action. Ex: "[Begin Action 123]" (ignora case)
             // Também captura se há espaços antes/depois dos colchetes e dentro deles.
             Regex actionBeginRegex = new Regex(@"^\s*\[\s*Begin\s+Action\s+(\d+)\s*\]\s*$", RegexOptions.IgnoreCase);
-            
+
             foreach (string line in lines)
             {
                 string trimmedLine = line.Trim();
-                
+
                 // Ignora linhas vazias ou comentários (MUGEN usa ';', mas '//' é comum em outros contextos)
                 if (string.IsNullOrEmpty(trimmedLine) || trimmedLine.StartsWith(";") || trimmedLine.StartsWith("//"))
                 {
-                    continue; 
+                    continue;
                 }
 
                 Match actionMatch = actionBeginRegex.Match(trimmedLine);
@@ -71,7 +71,7 @@ namespace MugenForever.AIR
                 if (currentAnimation != null)
                 {
                     // Ignorar definições de Clsn por enquanto
-                    if (trimmedLine.ToLowerInvariant().StartsWith("clsn")) 
+                    if (trimmedLine.ToLowerInvariant().StartsWith("clsn"))
                     {
                         continue;
                     }

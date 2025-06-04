@@ -10,6 +10,6 @@ namespace MugenForever.AIR
         public bool HorizontalFlip { get; set; }
         public bool VerticalFlip { get; set; }
         // Adicionaremos caixas de colisão e outros dados depois
-        // public Rect[] CollisionBoxes { get; set; } 
+        // public Rect[] CollisionBoxes { get; set; }
     }
 }

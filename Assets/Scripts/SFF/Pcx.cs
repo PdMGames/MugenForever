@@ -2,7 +2,7 @@ using UnityEngine;
 using System.IO;
 
 // Namespace adjusted to match the one in SffV1.cs and SffV2.cs
-namespace MugenForever.Sff 
+namespace MugenForever.Sff
 {
     public class Pcx
     {
@@ -43,7 +43,7 @@ namespace MugenForever.Sff
                     reader.ReadByte(); // Skip reserved
                     byte numColorPlanes = reader.ReadByte(); // Número de planos de cor
                     ushort bytesPerLine = reader.ReadUInt16(); // Bytes por linha de varredura por plano
-                    
+
                     reader.ReadUInt16(); // Skip paletteInfo - Informação da paleta (color/bw)
                     reader.ReadUInt16(); // Skip hScreenSize
                     reader.ReadUInt16(); // Skip vScreenSize
@@ -89,7 +89,7 @@ namespace MugenForever.Sff
                             {
                                 Debug.LogErrorFormat("PCX_LOAD: RLE decoding overflow (pixelIndex: {0} >= DecodedPixels.Length: {1}) while scanlineByteCounter: {2} < bytesPerLine: {3} at line {4}.",
                                     pixelIndex, DecodedPixels.Length, scanlineByteCounter, bytesPerLine, y);
-                                return false; 
+                                return false;
                             }
                             if (reader.BaseStream.Position >= reader.BaseStream.Length) {
                                 Debug.LogError("PCX_LOAD: Unexpected EOF during RLE scanline decoding at line " +y);
@@ -130,9 +130,9 @@ namespace MugenForever.Sff
                             }
                         }
                     }
-                    
+
                     // Leitura da Paleta VGA (256 cores)
-                    if (bitsPerPixel == 8 && numColorPlanes == 1) 
+                    if (bitsPerPixel == 8 && numColorPlanes == 1)
                     {
                         long expectedPaletteOffset = pcxData.Length - 769;
                         if (expectedPaletteOffset > 0 && stream.Length > expectedPaletteOffset) // Check if file is large enough
@@ -174,7 +174,7 @@ namespace MugenForever.Sff
         }
          // Utility method to create a Texture2D from loaded PCX data.
         // This will be called by SffSprite or a similar class.
-        public Texture2D CreateTexture() 
+        public Texture2D CreateTexture()
         {
             if (DecodedPixels == null || Width == 0 || Height == 0)
             {
@@ -192,7 +192,7 @@ namespace MugenForever.Sff
                                      DecodedPixels.Length, Width, Height, Width * Height);
                 return null;
             }
-            
+
             Texture2D texture = new Texture2D(Width, Height, TextureFormat.RGBA32, false);
             Color32[] colorData = new Color32[Width * Height];
 

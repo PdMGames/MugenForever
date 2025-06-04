@@ -8,7 +8,7 @@ using System.Collections.Generic; // Para List<>
 namespace MugenForever.Sff
 {
     // Sff agora é uma classe utilitária estática, não um MonoBehaviour
-    public static class Sff 
+    public static class Sff
     {
         // fileName não é mais um campo de instância, será passado como parâmetro
         // os campos de dados do SFF (sprites, version, etc.) estarão em SffInfo
@@ -43,7 +43,7 @@ namespace MugenForever.Sff
                     // SFFv2: "ElecbyteSpr\0" + verlo3, verlo2, verlo1, verhi (0,0,0,2)
                     // O byte no índice 15 (fsSource.Read(versionBytes, 15, 1)) é 'verhi'
                     // Vamos ler a assinatura para confirmar.
-                    
+
                     fsSource.Seek(0, SeekOrigin.Begin); // Voltar ao início para os leitores V1/V2
                     char[] signatureChars = new char[12];
                     using(BinaryReader sigReader = new BinaryReader(fsSource, System.Text.Encoding.ASCII, true)) // true to leave stream open

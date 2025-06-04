@@ -76,7 +76,7 @@ namespace MugenForever
                 return false;
             }
         }
-        
+
         // ReadFromFile é mantido como protected ou private, chamado por Load.
         // O 'override' sugere que é de uma classe base MugenForever.Reader.Text
         // Vamos assumir que a classe base permite que este método seja chamado e não requer que seja 'public override'
@@ -137,9 +137,9 @@ namespace MugenForever
                 // Apenas garantindo que 'displayname' seja usado quando se refere ao nome de exibição do char.
 
                 System.Type T = this.GetType(); // Usar GetType() para suportar herança se houver
-                System.Reflection.FieldInfo field = T.GetField(variable, 
-                    System.Reflection.BindingFlags.Instance | 
-                    System.Reflection.BindingFlags.Public | 
+                System.Reflection.FieldInfo field = T.GetField(variable,
+                    System.Reflection.BindingFlags.Instance |
+                    System.Reflection.BindingFlags.Public |
                     System.Reflection.BindingFlags.IgnoreCase); // Tornar a busca de campo mais flexível
 
                 if (field != null)

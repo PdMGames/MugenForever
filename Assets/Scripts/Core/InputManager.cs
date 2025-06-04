@@ -13,7 +13,7 @@ namespace MugenForever.Core
     public static class InputManager
     {
         private static Dictionary<MugenInputKey, KeyCode> keyMappings;
-        
+
         private static Dictionary<MugenInputKey, bool> heldKeys;
         private static Dictionary<MugenInputKey, bool> pressedKeys;
         private static Dictionary<MugenInputKey, bool> releasedKeys;
@@ -81,7 +81,7 @@ namespace MugenForever.Core
         public static bool IsHeld(MugenInputKey key)
         {
             // Ensure initialized before trying to access, though Update should handle this.
-            if (!isInitialized) Initialize(); 
+            if (!isInitialized) Initialize();
             if (heldKeys.TryGetValue(key, out bool value)) return value;
             return false;
         }

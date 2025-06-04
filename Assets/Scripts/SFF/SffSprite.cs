@@ -166,7 +166,7 @@ This is the actual
                         if (paletteIndex >= pcx.Palette.Length)
                         {
                             // Fallback para magenta se o índice da paleta estiver fora dos limites
-                            pixels[((pcx.Height - 1 - y) * pcx.Width) + x] = new Color32(255, 0, 255, 255); 
+                            pixels[((pcx.Height - 1 - y) * pcx.Width) + x] = new Color32(255, 0, 255, 255);
                         }
                         else
                         {
@@ -203,9 +203,9 @@ This is the actual
             // Então, pivot.x = axisX / width  e  pivot.y = 1 - (axisY / height)
             float pivotX = (pcx.Width > 0) ? ((float)this.axisX / pcx.Width) : 0.5f;
             float pivotY = (pcx.Height > 0) ? (1.0f - ((float)this.axisY / pcx.Height)) : 0.5f;
-            
+
             sprite = Sprite.Create(texture, new Rect(0, 0, pcx.Width, pcx.Height), new Vector2(pivotX, pivotY), 100.0f); // 100 pixels per unit é um valor comum
-            
+
             // Debug.Log($"SFFSPRITE_GENERATE: Sprite '{groupNumber}-{imageNumber}' created. Size: {pcx.Width}x{pcx.Height}, Axis: ({axisX},{axisY}), Pivot: ({pivotX},{pivotY})");
         }
     }

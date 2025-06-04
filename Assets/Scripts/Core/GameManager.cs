@@ -8,7 +8,7 @@ namespace MugenForever.Core
         void Awake()
         {
             // Garante que o InputManager seja inicializado ao iniciar o jogo.
-            InputManager.Initialize(); 
+            InputManager.Initialize();
         }
 
         void Update()

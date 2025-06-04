@@ -7,7 +7,7 @@ namespace MugenForever.CMD
 {
     public static class CmdParser
     {
-        // Regex para [Command] 
+        // Regex para [Command]
         private static Regex commandBlockRegex = new Regex(@"^\s*\[\s*Command\s*\]\s*$", RegexOptions.IgnoreCase);
         private static Regex nameRegex = new Regex(@"^\s*name\s*=\s*""(.+)""\s*$", RegexOptions.IgnoreCase);
         private static Regex commandSequenceRegex = new Regex(@"^\s*command\s*=\s*(.+)$", RegexOptions.IgnoreCase);
@@ -15,7 +15,7 @@ namespace MugenForever.CMD
         private static Regex timeNRex = new Regex(@"^\s*time\.(\d+)\s*=\s*(\d+)\s*$", RegexOptions.IgnoreCase); // Para time.N
         private static Regex bufferTimeRegex = new Regex(@"^\s*buffer\.time\s*=\s*(\d+)\s*$", RegexOptions.IgnoreCase);
         // Embora stateno seja tipicamente usado no CNS, alguns arquivos CMD podem ter essa informação para referência ou ferramentas.
-        private static Regex statenoRegex = new Regex(@"^\s*stateno\s*=\s*(-?\d+)\s*$", RegexOptions.IgnoreCase); 
+        private static Regex statenoRegex = new Regex(@"^\s*stateno\s*=\s*(-?\d+)\s*$", RegexOptions.IgnoreCase);
 
         public static CmdData ParseCmdFile(string filePath)
         {
@@ -53,11 +53,11 @@ namespace MugenForever.CMD
                     {
                         cmdData.Commands.Add(currentCommand);
                     }
-                    currentCommand = null; 
+                    currentCommand = null;
                     inCommandBlockDeclaration = true; // Próxima linha esperada é 'name = "..."'
                     continue;
                 }
-                
+
                 // Ignora linhas que não estão dentro de um bloco iniciado por [Command]
                 // ou se a declaração do bloco não foi seguida por 'name = ...'
                 if (!inCommandBlockDeclaration && currentCommand == null) continue;
@@ -129,11 +129,11 @@ namespace MugenForever.CMD
                     currentCommand.Time = int.Parse(timeMatch.Groups[1].Value);
                     continue;
                 }
-                
+
                 Match timeNMatch = timeNRex.Match(processedLine);
                 if (timeNMatch.Success)
                 {
-                    int inputIndex = int.Parse(timeNMatch.Groups[1].Value); 
+                    int inputIndex = int.Parse(timeNMatch.Groups[1].Value);
                     int timeVal = int.Parse(timeNMatch.Groups[2].Value);
                     currentCommand.InputTimes[inputIndex] = timeVal; // Armazena com índice 1-based
                     continue;
@@ -145,7 +145,7 @@ namespace MugenForever.CMD
                     currentCommand.BufferTime = int.Parse(bufferMatch.Groups[1].Value);
                     continue;
                 }
-                
+
                 Match statenoMatch = statenoRegex.Match(processedLine);
                 if (statenoMatch.Success)
                 {
